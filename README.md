@@ -23,6 +23,13 @@ install.packages("glmnet")
 install.packages("doParallel")  
 install.packages("foreach")
 install.packages("doSNOW")
+
+library(GenomicRanges)
+library(GenomicFeatures)
+library(rtracklayer)
+library(dplyr)
+library(RBBR)
+library(readxl)
 ```  
 
 <br>
@@ -31,13 +38,6 @@ install.packages("doSNOW")
 
 ```R
 #### Load data
-library(GenomicRanges)
-library(GenomicFeatures)
-library(rtracklayer)
-library(dplyr)
-library(RBBR)
-library(readxl)
-
 # Load the RData file containing the ATAC-seq data, RNA-seq data, and peak locations
 load("mouse_dataset.RData")
 
@@ -85,20 +85,35 @@ rnaseq_data[1:5, 1:5]
 0610009O20Rik   168.645852   157.926022     155.94164   186.261464  162.584556
 ```
 
-#### Step 3. Extract ATAC-seq signal intensities and normalize per peak
+
+#### Step 3. Generate a list of peaks located within a ±100kb window around each gene.
 ```R
-atacseq_data <- atacseq[   ,(colnames(atacseq) %in% cells_types)]
-peak_names <- rownames(atacseq_data)
+gene_name <- "Rag2"
 
-atacseq_data <- t(atacseq_data)
-colnames(atacseq_data) <- peak_names
+linked_peaks <- link_peaks_to_tss(
+  gtf_file = "D:\\PBMC\\mm10\\gencode.vM25.annotation.gtf",
+  peaks_gr = peaks_gr,
+  gene_list = gene_name, 
+  tss_window = 100000 # ±100kb
+)
 
-atacseq_data <- log(1+atacseq_data,10)
-atacseq_data_scaled <- atacseq_data
-for(j in 1:ncol(atacseq_data)){
-  x <- ( atacseq_data[ ,j] - mean(atacseq_data[ ,j]) )/sd(atacseq_data[ ,j])
-  atacseq_data_scaled[ ,j]<- 1/(1+exp(-x))
-}
+linked_peaks
+# A tibble: 83 × 7
+   peak                     gene_id            gene_name gene_type      transcript_id      peak_id min_distance
+   <chr>                    <chr>              <chr>     <chr>          <chr>                <int>        <dbl>
+ 1 chr2:101525902-101525952 ENSMUSG00000032864 Rag2      protein_coding ENSMUST00000044031  278345       98790.
+ 2 chr2:101533903-101533953 ENSMUSG00000032864 Rag2      protein_coding ENSMUST00000044031  278346       90790.
+ 3 chr2:101537021-101537071 ENSMUSG00000032864 Rag2      protein_coding ENSMUST00000044031  278347       87672.
+ 4 chr2:101543845-101543895 ENSMUSG00000032864 Rag2      protein_coding ENSMUST00000044031  278348       80848.
+ 5 chr2:101545763-101545813 ENSMUSG00000032864 Rag2      protein_coding ENSMUST00000044031  278349       78930.
+ 6 chr2:101549272-101549322 ENSMUSG00000032864 Rag2      protein_coding ENSMUST00000044031  278350       75420.
+ 7 chr2:101550344-101550394 ENSMUSG00000032864 Rag2      protein_coding ENSMUST00000044031  278351       74348.
+ 8 chr2:101551169-101551219 ENSMUSG00000032864 Rag2      protein_coding ENSMUST00000044031  278352       73524.
+ 9 chr2:101551591-101551641 ENSMUSG00000032864 Rag2      protein_coding ENSMUST00000044031  278353       73102.
+10 chr2:101552534-101552584 ENSMUSG00000032864 Rag2      protein_coding ENSMUST00000044031  278354       72158.
+# ℹ 73 more rows
+# ℹ Use `print(n = ...)` to see more rows
+# 
 ```
 
 #### Step 4. Extract ATAC-seq peaks within ±100 kb of the target gene TSS

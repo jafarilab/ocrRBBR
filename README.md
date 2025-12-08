@@ -83,25 +83,6 @@ rnaseq_data[1:5, 1:5]
 0610009B22Rik    78.272059    78.837030      68.84475    76.418169  106.085619
 0610009L18Rik     8.577159    16.791386      15.51155    16.947354   10.583704
 0610009O20Rik   168.645852   157.926022     155.94164   186.261464  162.584556
-
-
-
-
-
-
-
-
-
-
-
-
-atacseq <- as.data.frame(read.csv(file = "ImmGenATAC18_AllOCRsInfo.csv", header= TRUE, check.names = FALSE))
-rnaseq <- as.data.frame(read.csv(file = "mmc2.csv", header= TRUE, check.names = FALSE))
-mmc1 <- as.data.frame(read_excel("mmc1.xlsx", sheet = 1, col_names = TRUE, col_types = "text"))
-cell_type_lineage <- mmc1[ ,c(2,4,5)]
-
-#### Extract shared cell types between ATAC-seq and RNA-seq data
-cells_types <- intersect(colnames(atacseq), colnames(rnaseq))
 ```
 
 #### Step 3. Extract ATAC-seq signal intensities and normalize per peak

@@ -64,7 +64,8 @@ GRanges object with 512595 ranges and 3 metadata columns:
   -------
   seqinfo: 44 sequences from an unspecified genome; no seqlengths
 
-# Inspect the atacseq_data matrix, where rows correspond to peaks and columns correspond to cell types. The values represent quantile-normalized ATAC-seq signal intensities.
+# Inspect the atacseq_data matrix, where rows correspond to peaks and columns correspond to cell types.
+# The values represent quantile-normalized ATAC-seq signal intensities.
 atacseq_data[1:5, 1:5]
   LTHSC.34-.BM LTHSC.34+.BM STHSC.150-.BM MPP4.135+.BM proB.CLP.BM
 1         0.41         0.71          0.90         0.11        1.94
@@ -73,7 +74,8 @@ atacseq_data[1:5, 1:5]
 4         0.41         0.10          0.11         0.11        0.79
 5         0.41         0.10          0.11         0.11        0.47
 
-# Inspect the rnaseq_data matrix, where rows correspond to genes and columns correspond to cell types. The values represent quantile-normalized RNA-seq signal intensities.
+# Inspect the rnaseq_data matrix, where rows correspond to genes and columns correspond to cell types.
+# The values represent quantile-normalized RNA-seq signal intensities.
 rnaseq_data[1:5, 1:5]
               LTHSC.34-.BM LTHSC.34+.BM STHSC.150-.BM MPP4.135+.BM proB.CLP.BM
 0610005C13Rik     1.096732     1.096732       1.02175     1.021812    1.205236
@@ -88,23 +90,8 @@ rnaseq_data[1:5, 1:5]
 
 
 
-peaks_gr
-GRanges object with 512595 ranges and 3 metadata columns:
-           seqnames            ranges strand |    peakID phastCons_scores mlog10_bestPvalue
-              <Rle>         <IRanges>  <Rle> | <integer>        <numeric>         <numeric>
-       [1]     chr1   3020761-3020811      * |         1             0.00              0.56
-       [2]     chr1   3087201-3087251      * |         2             0.00              0.50
-       [3]     chr1   3120084-3120134      * |         3             0.07             10.80
-       [4]     chr1   3121460-3121510      * |         4             0.15              3.02
-       [5]     chr1   3372762-3372812      * |         5             0.03              1.31
-       ...      ...               ...    ... .       ...              ...               ...
-  [512591]     chrY 90812425-90812475      * |    512591                0              3.99
-  [512592]     chrY 90812881-90812931      * |    512592                0              3.21
-  [512593]     chrY 90813150-90813200      * |    512593                0              0.69
-  [512594]     chrY 90813599-90813649      * |    512594                0              0.60
-  [512595]     chrY 90828960-90829010      * |    512595                0              1.41
-  -------
-  seqinfo: 44 sequences from an unspecified genome; no seqlengths
+
+
 
 
 

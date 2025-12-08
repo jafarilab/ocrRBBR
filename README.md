@@ -31,8 +31,82 @@ install.packages("doSNOW")
 
 ```R
 #### Load data
+library(GenomicRanges)
+library(GenomicFeatures)
+library(rtracklayer)
+library(dplyr)
 library(RBBR)
 library(readxl)
+
+# Load the RData file containing the ATAC-seq data, RNA-seq data, and peak locations
+load("mouse_dataset.RData")
+
+# List all objects in the current R environment
+ls()
+[1] "atacseq_data" "peaks_gr"     "rnaseq_data"
+
+# Inspect the GRanges object peaks_gr, which contains peak consensus scores across mammalian genomes and associated peak p-values.
+peaks_gr
+GRanges object with 512595 ranges and 3 metadata columns:
+           seqnames            ranges strand |    peakID phastCons_scores mlog10_bestPvalue
+              <Rle>         <IRanges>  <Rle> | <integer>        <numeric>         <numeric>
+       [1]     chr1   3020761-3020811      * |         1             0.00              0.56
+       [2]     chr1   3087201-3087251      * |         2             0.00              0.50
+       [3]     chr1   3120084-3120134      * |         3             0.07             10.80
+       [4]     chr1   3121460-3121510      * |         4             0.15              3.02
+       [5]     chr1   3372762-3372812      * |         5             0.03              1.31
+       ...      ...               ...    ... .       ...              ...               ...
+  [512591]     chrY 90812425-90812475      * |    512591                0              3.99
+  [512592]     chrY 90812881-90812931      * |    512592                0              3.21
+  [512593]     chrY 90813150-90813200      * |    512593                0              0.69
+  [512594]     chrY 90813599-90813649      * |    512594                0              0.60
+  [512595]     chrY 90828960-90829010      * |    512595                0              1.41
+  -------
+  seqinfo: 44 sequences from an unspecified genome; no seqlengths
+
+# Inspect the atacseq_data matrix, where rows correspond to peaks and columns correspond to cell types. The values represent quantile-normalized ATAC-seq signal intensities.
+atacseq_data[1:5, 1:5]
+  LTHSC.34-.BM LTHSC.34+.BM STHSC.150-.BM MPP4.135+.BM proB.CLP.BM
+1         0.41         0.71          0.90         0.11        1.94
+2         0.41         1.64          0.90         0.83        0.47
+3         2.36         0.10          0.90         0.11        0.47
+4         0.41         0.10          0.11         0.11        0.79
+5         0.41         0.10          0.11         0.11        0.47
+
+# Inspect the rnaseq_data matrix, where rows correspond to genes and columns correspond to cell types. The values represent quantile-normalized RNA-seq signal intensities.
+rnaseq_data[1:5, 1:5]
+              LTHSC.34-.BM LTHSC.34+.BM STHSC.150-.BM MPP4.135+.BM proB.CLP.BM
+0610005C13Rik     1.096732     1.096732       1.02175     1.021812    1.205236
+0610007P14Rik   206.053987   246.105317     192.42464   204.298358  189.759175
+0610009B22Rik    78.272059    78.837030      68.84475    76.418169  106.085619
+0610009L18Rik     8.577159    16.791386      15.51155    16.947354   10.583704
+0610009O20Rik   168.645852   157.926022     155.94164   186.261464  162.584556
+
+
+
+
+
+
+
+peaks_gr
+GRanges object with 512595 ranges and 3 metadata columns:
+           seqnames            ranges strand |    peakID phastCons_scores mlog10_bestPvalue
+              <Rle>         <IRanges>  <Rle> | <integer>        <numeric>         <numeric>
+       [1]     chr1   3020761-3020811      * |         1             0.00              0.56
+       [2]     chr1   3087201-3087251      * |         2             0.00              0.50
+       [3]     chr1   3120084-3120134      * |         3             0.07             10.80
+       [4]     chr1   3121460-3121510      * |         4             0.15              3.02
+       [5]     chr1   3372762-3372812      * |         5             0.03              1.31
+       ...      ...               ...    ... .       ...              ...               ...
+  [512591]     chrY 90812425-90812475      * |    512591                0              3.99
+  [512592]     chrY 90812881-90812931      * |    512592                0              3.21
+  [512593]     chrY 90813150-90813200      * |    512593                0              0.69
+  [512594]     chrY 90813599-90813649      * |    512594                0              0.60
+  [512595]     chrY 90828960-90829010      * |    512595                0              1.41
+  -------
+  seqinfo: 44 sequences from an unspecified genome; no seqlengths
+
+
 
 atacseq <- as.data.frame(read.csv(file = "ImmGenATAC18_AllOCRsInfo.csv", header= TRUE, check.names = FALSE))
 rnaseq <- as.data.frame(read.csv(file = "mmc2.csv", header= TRUE, check.names = FALSE))

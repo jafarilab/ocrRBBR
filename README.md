@@ -11,6 +11,23 @@
   - [Inference of OCR-Driven Boolean Rules in single-cell Multiome Datasets](#usage2)
 
 # Dependency
+Please ensure that the required libraries from the following list are installed and loaded. 
+The glmnet package is necessary for fitting ridge regressions. To enable parallel computing in ocrRBBR, the following packages must also be installed: doParallel, foreach, and doSNOW.
+
+```R
+library(doParallel)
+library(foreach)
+library(doSNOW)
+library(glmnet)
+library(GenomicRanges)
+library(GenomicFeatures)
+library(rtracklayer)
+library(dplyr)
+library(ocrRBBR)
+library(readxl)
+```  
+
+<br>
 
 # Installation
 
@@ -37,23 +54,7 @@ install.packages("path/to/RBBR_0.1.0.tar.gz", repos = NULL, type = "source")
 <br>
 
 #### Dependencies  
-Please ensure that the required libraries from the following list are installed and loaded. 
-The glmnet package is necessary for fitting ridge regressions. To enable parallel computing in ocrRBBR, the following packages must also be installed: doParallel, foreach, and doSNOW.
 
-```R
-library(doParallel)
-library(foreach)
-library(doSNOW)
-library(glmnet)
-library(GenomicRanges)
-library(GenomicFeatures)
-library(rtracklayer)
-library(dplyr)
-library(ocrRBBR)
-library(readxl)
-```  
-
-<br>
 
 #### Step 2. Prepare input files
 

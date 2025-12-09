@@ -47,7 +47,13 @@ ocrRBBR infers Boolean rules for chromatin accessibility states based on two typ
 A toy dataset example is provided in example/. Please see following examples for instructions.
 
 ## Inference of OCR-Driven Boolean Rules in Bulk Multiome Datasets
-[Click me](https://example.com)
+<details>
+  <summary>Click me</summary>
+
+Your content goes here.  
+You can include code blocks, text, images, anything.
+
+</details>
 
 ## Inference of OCR-Driven Boolean Rules in single-cell Multiome Datasets
 

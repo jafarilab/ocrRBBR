@@ -30,21 +30,7 @@ library(readxl)
 <br>
 
 # Installation
-
-# Usage
-
-## Inference of OCR-Driven Boolean Rules in Bulk Multiome Datasets
-
-## Inference of OCR-Driven Boolean Rules in single-cell Multiome Datasets
-
-
-
-
-
-#### Step 1. ocrRBBR installation
-The ocrRBBR codes are written in R version 4.1.3 and have been tested in both Windows and Linux environments. 
-
-#### Installation
+The ocrRBBR codes are written in R version 4.1.3 and have been tested in both Windows and Linux environments.
 1. Download the compiled package file `RBBR_0.1.0.tar.gz` from this GitHub page.
 2. Install the ocrRBBR package by running the following command in R:
    
@@ -53,7 +39,12 @@ install.packages("path/to/RBBR_0.1.0.tar.gz", repos = NULL, type = "source")
 ```
 <br>
 
-#### Dependencies  
+# Usage
+
+## Inference of OCR-Driven Boolean Rules in Bulk Multiome Datasets
+
+## Inference of OCR-Driven Boolean Rules in single-cell Multiome Datasets
+
 
 
 #### Step 2. Prepare input files

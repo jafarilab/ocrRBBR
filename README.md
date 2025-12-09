@@ -44,9 +44,10 @@ ocrRBBR infers Boolean rules for chromatin accessibility states based on two typ
 1. Bulk paired ATAC-seq and RNA-seq datasets
 2. Single-cell paired ATAC-seq and RNA-seq datasets
 
-Please see following examples for instructions.
+A toy dataset example is provided in example/. Please see following examples for instructions.
 
 ## Inference of OCR-Driven Boolean Rules in Bulk Multiome Datasets
+[Click me](https://example.com)
 
 ## Inference of OCR-Driven Boolean Rules in single-cell Multiome Datasets
 

@@ -118,63 +118,45 @@ linked_peaks
 
 #### Step 4. Extract ATAC-seq peaks within ±100 kb of the target gene TSS
 ```R
-gene_id   <- "Rag2"
+# -------------------------------
+# 1. Get linked peaks for gene
+# -------------------------------
+linked_peaks_gene <- linked_peaks[linked_peaks$gene_name == gene_name, ]
+if(nrow(linked_peaks_gene) == 0){
+  stop("No linked peaks found for gene: ", gene_name)
+}
 
-matched_indices <- grep(paste0("(?<!\\w)", gene_id, "(?!\\w)"), atacseq$genes.within.100Kb, perl = TRUE)
-atacseq_gene <- atacseq[matched_indices, ]
-atacseq_gene <- atacseq_gene[   ,(colnames(atacseq_gene) %in% cells_types)]
+peak_ids <- linked_peaks_gene$peak_id
+
+# -------------------------------
+# 2. Extract peak GRanges and filter by conservation + pvalue
+This step removes ATAC-seq peaks with low signal intensities (based on p-values) or peaks not conserved across the mammalian genome. This step helps reduce potential false positive predictions by ocrRBBR and can be omitted if desired.
+# -------------------------------
+peaks_gr_tmp <- peaks_gr[peaks_gr$peakID %in% peak_ids]
+
+if(length(peaks_gr_tmp) == 0){
+  stop("No peak GRanges found for gene: ", gene_name)
+}
+
+phast_median <- median(peaks_gr_tmp$phastCons_scores, na.rm = TRUE)
+pval_median  <- median(peaks_gr_tmp$mlog10_bestPvalue, na.rm = TRUE)
+
+peaks_gr_tmp <- peaks_gr_tmp[
+  (peaks_gr_tmp$phastCons_scores > phast_median) &
+    (peaks_gr_tmp$mlog10_bestPvalue > pval_median)
+]
+
+peak_ids <- peaks_gr_tmp$peakID
 ```
 
-#### Step 5. Remove ATAC-seq peaks with low signal intensities (based on p-values) or peaks not conserved across the mammalian genome. This step helps reduce potential false positive predictions by ocrRBBR and can be omitted if desired.
+#### Step 6. Train the model and output the predicted Boolean regulatory rules.
 ```R
-peak_info <- atacseq[rownames(atacseq_gene), 1:8]
-
-a <- median(peak_info$mm10.60way.phastCons_scores)
-b <- median(peak_info$`_-log10_bestPvalue`)
-
-peak_info <- peak_info[ ((peak_info$mm10.60way.phastCons_scores>=a)&(peak_info$`_-log10_bestPvalue`>=b)), ]
-log_atacseq <- atacseq_data_scaled[ ,row.names(peak_info)]
-```
-
-#### Step 6. Extract and rescale RNA-seq data for the target gene across blood cell lineages.
-```R
-rnaseq_gene <- rnaseq[(rnaseq$X %in% gene_id), ]
-rnaseq_gene <- rnaseq_gene[ ,(colnames(rnaseq_gene) %in% cells_types)]
-rownames(rnaseq_gene) <- gene_id
-
-log_rnaseq <- log(1+rnaseq_gene,10) - min(log(1+rnaseq_gene,10))
-log_rnaseq <- log_rnaseq/quantile(as.numeric(unlist(log_rnaseq)), probs = 0.975 , na.rm = TRUE)
-
-data_scaled <- cbind( log_atacseq, t(log_rnaseq) )
-data_scaled <- replace(data_scaled, data_scaled>=1, 0.9999)
-data_scaled <- replace(data_scaled, data_scaled<=0, 0.0001)
-
-head(data_scaled)
-```
-
-#### Step 7. Train the model and output the predicted Boolean regulatory rules.
-```R
-rbbr           <- rbbr_train(data_scaled, max_feature = min(3,ncol(data_scaled)-1), mode = "1L", slope = 10, penalty = NA, weight_threshold = NA, num_cores = NA)
-training process started with  8  computing cores
-  |====================| 100%
-
-
-head(rbbr$boolean_rules_sorted)
-
-                                                                                                        Boolean_Rule                R2       BIC Input_Size Index             Features
-1                              [OR(AND(278352,278381,278384),AND(~278352,278381,278384),AND(278352,~278381,278384))] 0.788633167796687 -306.8806          3   706 278352.278381.278384
-2 [OR(AND(278362,278381,278398),AND(~278362,278381,278398),AND(278362,~278381,278398),AND(~278362,~278381,~278398))] 0.788220565514429 -306.7148          3  1435 278362.278381.278398
-3 [OR(AND(278381,278390,278398),AND(278381,~278390,278398),AND(~278381,~278390,278398),AND(~278381,278390,~278398))] 0.788150615447657 -306.6867          3  2166 278381.278390.278398
-4                              [OR(AND(278355,278381,278384),AND(~278355,278381,278384),AND(278355,~278381,278384))] 0.786059559598788 -305.8519          3  1277 278355.278381.278384
-5                                                                                               [AND(278386,278398)] 0.746314992241634 -304.7223          2   275        278386.278398
-6                                                                                                           [278384] 0.725155753428715 -304.6730          1    16               278384
-  Active_Conjunctions                   Weights Layer1, Sub-Rule1
-1                   3 0.46:0.72:0.34:-2.45:-2.17:-0.4:-0.64:-0.05
-2                   4  0.49:0.75:0.55:-1.6:-2.02:-0.48:-0.67:0.05
-3                   4 0.18:-1.59:0.93:-0.35:0.58:0.13:-1.33:-0.85
-4                   3 0.54:0.75:0.34:-1.99:-1.88:-0.49:-0.6:-0.08
-5                   1                       0.71:-0.8:-1.04:-0.28
-6                   1                                  0.54:-0.54
+# -------------------------------
+# 6. Run RBBR
+# -------------------------------
+source("D://RBBR_enh//R//ocrRBBR_bulk.R")
+res <- ocrRBBR_bulk(rnaseq_data, atacseq_data, gene_name, peak_ids = c("278384"), max_feature = 3, slope = 10, num_cores = NA)
+head(res$boolean_rules_sorted)
 ```
 
 

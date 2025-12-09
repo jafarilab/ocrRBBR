@@ -27,7 +27,7 @@ library(GenomicRanges)
 library(GenomicFeatures)
 library(rtracklayer)
 library(dplyr)
-library(RBBR)
+library(ocrRBBR)
 library(readxl)
 ```  
 

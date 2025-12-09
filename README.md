@@ -37,7 +37,8 @@ install.packages("path/to/RBBR_0.1.0.tar.gz", repos = NULL, type = "source")
 <br>
 
 #### Dependencies  
-Load required libraries: The glmnet package is needed to fit ridge regressions. To enable parallel computing in ocrRBBR, the following packages must also be installed: doParallel, foreach, and doSNOW.
+Please ensure that the required libraries from the following list are installed and loaded. 
+The glmnet package is necessary for fitting ridge regressions. To enable parallel computing in ocrRBBR, the following packages must also be installed: doParallel, foreach, and doSNOW.
 
 ```R
 library(doParallel)

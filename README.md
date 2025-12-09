@@ -1,7 +1,19 @@
-## ocrRBBR: an R package for the inference of Regression-Based Boolean Rules in multiomic data.
-- This repository contains code and tutorials for executing ocrRBBR.
-- Sample datasets to execute ocrRBBR are stored within the Data directory.
-- The ocrRBBR package supports parallel execution on multi-CPU platforms, enhancing accessibility for real-world Boolean rule inference applications.
+## ocrRBBR
+Predict OCR-driven Boolean rules from multi-omics datasets
+
+ocrRBBR is an R package to infer Boolean rules linking chromatin accessibility (ATAC-seq peaks) to gene expression (RNA-seq) in both bulk and single-cell multiomic datasets. The package identifies combinations of OCRs (Open Chromatin Regions) that best predict the expression state of a target gene.
+
+Features
+
+1. Predict Boolean regulatory rules using bulk-level multiome datasets.
+
+2. Support for single-cell multiome datasets.
+
+3. Handles RNA-seq and ATAC-seq data with matching cell/sample identities.
+
+4. Outputs interpretable Boolean rules with associated metrics.
+
+5. Parallel computing support for faster processing of large datasets.
 
 # Table of Contents
 - [Dependency](#Dependency)

@@ -41,8 +41,8 @@ install.packages("path/to/RBBR_0.1.0.tar.gz", repos = NULL, type = "source")
 
 # Usage
 ocrRBBR infers Boolean rules for chromatin accessibility states based on two types of multiomic datasets:
-1- Bulk paired ATAC-seq and RNA-seq datasets
-2- Single-cell paired ATAC-seq and RNA-seq datasets
+1. Bulk paired ATAC-seq and RNA-seq datasets
+2. Single-cell paired ATAC-seq and RNA-seq datasets
 
 Please see following examples for instructions.
 

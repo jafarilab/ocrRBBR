@@ -62,9 +62,41 @@ A toy dataset example is provided in example/. Please see following examples for
 <details>
   <summary>Click me</summary>
 
-Your content goes here.  
-You can include code blocks, text, images, anything.
+ocrRBBR_bulk requires RNA-seq expression data (in a matrix format) and ATAC-seq signal intensity data (in a matrix format) as input.
 
+Example: Predict Boolean rules for the gene "Spi1" using RNA-seq and ATAC-seq data, results will be saved in a specified folder.
+
+res <- ocrRBBR_bulk(rnaseq_data, atacseq_data, gene_name = "Spi1", peak_ids = peak_ids, max_feature = 3, slope = 10, num_cores = 8)
+
+Available parameters:
+
+Required arguments:
+
+rnaseq_data : A matrix of RNA-seq expression values (rows: genes, columns: samples/cell types).
+
+atacseq_data : A matrix of ATAC-seq signal intensities (rows: peaks, columns: samples/cell types).
+
+gene_name : A string specifying the gene for which to infer Boolean rules.
+
+peak_ids : A vector of peak identifiers from ATAC-seq data to use as candidate regulatory regions for the specified gene.
+
+Optional arguments:
+
+max_feature : Maximum number of input features allowed in a Boolean rule (default is 3).
+
+slope : Slope parameter for the sigmoid activation function (default is 10).
+
+num_cores : Number of parallel workers to use (default is NA for automatic selection).
+
+Results explanation:
+
+The function will output the predicted Boolean rules for the specified gene, along with associated metrics. The results include:
+
+Boolean rules: The inferred Boolean rules indicating regulatory relationships between ATAC-seq peaks and gene expression.
+
+Model fit: Information on the fitted model used to generate the Boolean rules.
+
+Additional metrics: Other metrics used for evaluating rule performance.
 </details>
 
 ## Inference of OCR-Driven Boolean Rules in single-cell Multiome Datasets

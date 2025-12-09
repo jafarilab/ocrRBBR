@@ -116,10 +116,10 @@ linked_peaks
 # 
 ```
 
-#### Step 4. Extract ATAC-seq peaks within ±100 kb of the target gene TSS
+#### Step 4. Extract peak GRanges and filter by conservation + pvalue
 ```R
 # -------------------------------
-# 1. Get linked peaks for gene
+# Get linked peaks for gene
 # -------------------------------
 linked_peaks_gene <- linked_peaks[linked_peaks$gene_name == gene_name, ]
 if(nrow(linked_peaks_gene) == 0){
@@ -129,8 +129,8 @@ if(nrow(linked_peaks_gene) == 0){
 peak_ids <- linked_peaks_gene$peak_id
 
 # -------------------------------
-# 2. Extract peak GRanges and filter by conservation + pvalue
-This step removes ATAC-seq peaks with low signal intensities (based on p-values) or peaks not conserved across the mammalian genome. This step helps reduce potential false positive predictions by ocrRBBR and can be omitted if desired.
+# This step removes ATAC-seq peaks with low signal intensities (based on p-values) or peaks not conserved across the mammalian genome.
+# This step helps reduce potential false positive predictions by ocrRBBR and can be omitted if desired.
 # -------------------------------
 peaks_gr_tmp <- peaks_gr[peaks_gr$peakID %in% peak_ids]
 
@@ -149,13 +149,12 @@ peaks_gr_tmp <- peaks_gr_tmp[
 peak_ids <- peaks_gr_tmp$peakID
 ```
 
-#### Step 6. Train the model and output the predicted Boolean regulatory rules.
+#### Step 5. Train the model and output the predicted Boolean regulatory rules.
 ```R
 # -------------------------------
 # 6. Run RBBR
 # -------------------------------
-source("D://RBBR_enh//R//ocrRBBR_bulk.R")
-res <- ocrRBBR_bulk(rnaseq_data, atacseq_data, gene_name, peak_ids = c("278384"), max_feature = 3, slope = 10, num_cores = NA)
+res <- ocrRBBR_bulk(rnaseq_data, atacseq_data, gene_name, peak_ids, max_feature = 3, slope = 10, num_cores = NA)
 head(res$boolean_rules_sorted)
 ```
 

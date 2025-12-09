@@ -155,8 +155,6 @@ peak_ids <- peaks_gr_tmp$peakID
 # 6. Run RBBR
 # -------------------------------
 res <- ocrRBBR_bulk(rnaseq_data, atacseq_data, gene_name, peak_ids, max_feature = 3, slope = 10, num_cores = NA)
-head(res$boolean_rules_sorted)
-
 ▶️ Starting processing for gene: Rag2 ...
 ✔️ All input checks passed.
 training process started with  8  computing cores

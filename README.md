@@ -55,7 +55,7 @@ ocrRBBR infers Boolean rules for chromatin accessibility states based on two typ
 A toy dataset example is provided in example/. Please see following examples for instructions.
 
 ## Inference of OCR-Driven Boolean Rules in Bulk Multiome Datasets
-# Run ocrRBBR_bulk to infer OCR-driven Boolean rules for a gene
+## Run ocrRBBR_bulk to infer OCR-driven Boolean rules for a gene
 
 ```R
 ocrRBBR_bulk(
@@ -90,7 +90,7 @@ Output Explanation
 The output of the ocrRBBR_bulk() function is a table containing the predicted Boolean rule sets for the gene. The table includes columns such as the Boolean rule (defining chromatin accessibility states), the adjusted R-squared (R²) value indicating rule fit, the Bayesian Information Criterion (BIC) score reflecting model quality, and the corresponding rule weights. Each row represents a distinct Boolean rule set, providing insights into the regulatory relationships between chromatin peaks and gene expression.
 ```
 
-# `link_peaks_to_tss()` links ATAC-seq peaks to genes based on a user-defined window (±100kb by default) around the TSS (Transcription Start Site).
+## `link_peaks_to_tss()` links ATAC-seq peaks to genes based on a user-defined window (±100kb by default) around the TSS (Transcription Start Site).
 ```bash
 linked_peaks <- link_peaks_to_tss(
   gtf_file = gtf_file,          # Path to the GTF file with gene annotations

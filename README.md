@@ -92,11 +92,7 @@ linked_peaks <- link_peaks_to_tss(
   tss_window = NA               # Optional: A custom window size around the TSS (default is ±100kb)
 )
 ```
-
-Returns
-```bash
-Returns ATAC-seq peaks located within the specified window size (in base pairs) around the TSS of each gene.
-```
+This function returns ATAC-seq peaks located within the specified window size (in base pairs) around the TSS of each gene.
 
 # Example using a mouse multiome dataset
 #### Step 1. Load data

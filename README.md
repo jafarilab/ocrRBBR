@@ -102,53 +102,39 @@ BIC	            The Bayesian Information Criterion (BIC) score for the model. Lo
 Weights	        The weights associated with each conjunction in the Boolean rule set. These weights represent how strongly each conjunction contributes to the overall rule. For example, 0.46:0.72:0.34:-2.45:-2.17 represents the weights of different rules within the Boolean rule.
 ```
 
-
 # `link_peaks_to_tss()` links ATAC-seq peaks to genes based on a user-defined window (±100kb by default) around the TSS (Transcription Start Site).
+```bash
 linked_peaks <- link_peaks_to_tss(
   gtf_file = gtf_file,          # Path to the GTF file with gene annotations
   peaks_gr = peaks_gr,          # GRanges object containing ATAC-seq peaks
   gene_list = NA,               # Optional: A list of specific genes to link peaks (default is NA, considering all genes)
   tss_window = NA               # Optional: A custom window size around the TSS (default is ±100kb)
 )
-
-
-
+```
 
 Parameters
+```bash
 Argument	Description
 gtf_file	Path to the GTF file containing the gene annotations (e.g., from Ensembl or Gencode).
 peaks_gr	A GRanges object containing peak regions (ATAC-seq peaks).
 gene_list	A character vector of gene names to consider. If left empty (default), all genes will be considered.
-tss_window	The window size (in base pairs) around the TSS to define the promoter region. Default is 100,000 bp.
+tss_window	Peaks located within the default or user-specified window size (in base pairs) around the gene TSS are reported. Default is 100,000 bp.
+```
+
 Returns
-
-A data frame containing the following columns:
-
-peak: Peak identifiers.
-
-peak_id: Peak ID associated with the ATAC-seq signal.
-
-gene_id: Gene ID associated with the peak.
-
-gene_name: Gene name associated with the peak.
-
-transcript_id: Transcript ID of the gene.
-
-gene_type: Gene type (e.g., protein-coding, lncRNA).
-
-distance: The distance between the peak center and the TSS.
+```bash
+Returns ATAC-seq peaks located within the specified window size (in base pairs) around the TSS of each gene.
+```
 
 
 
-
-
+<details>
+  <summary>Click me</summary>
+</details>
+  
 </details>
 
-## Inference of OCR-Driven Boolean Rules in single-cell Multiome Datasets
 
-
-
-#### Step 2. Prepare input files
 
 ```R
 #### Load data

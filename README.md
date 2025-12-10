@@ -48,12 +48,9 @@ install.packages("path/to/RBBR_0.1.0.tar.gz", repos = NULL, type = "source")
 <br>
 
 # Usage
-ocrRBBR infers Boolean rules for chromatin accessibility states based on two types of multiomic datasets:
-1. Bulk paired ATAC-seq and RNA-seq datasets
-2. Single-cell paired ATAC-seq and RNA-seq datasets
+I. Bulk paired ATAC-seq and RNA-seq datasets
 
 A toy dataset example is provided in example/. Please see following examples for instructions.
-
 #### Inference of OCR-Driven Boolean Rules in Bulk Multiome Datasets
 ```R
 ocrRBBR_bulk(
@@ -234,7 +231,9 @@ head(res$boolean_rules_sorted)
 6                   1                                  0.54:-0.54
 ```
 
+II. Single-cell paired ATAC-seq and RNA-seq datasets
 
+A toy dataset example is provided in example/. Please see following examples for instructions.
 
 
 

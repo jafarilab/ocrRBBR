@@ -48,7 +48,7 @@ install.packages("path/to/RBBR_0.1.0.tar.gz", repos = NULL, type = "source")
 <br>
 
 # Usage
-I. Bulk paired ATAC-seq and RNA-seq datasets
+# I. Bulk paired ATAC-seq and RNA-seq datasets
 
 A toy dataset example is provided in example/. Please see following examples for instructions.
 #### Inference of OCR-Driven Boolean Rules in Bulk Multiome Datasets
@@ -96,7 +96,7 @@ This function returns ATAC-seq peaks located within the specified window size (i
 <br>
 <br>
 
-# Example using a mouse multiome dataset
+## Example using a mouse multiome dataset
 #### Step 1. Load data
 ```R
 # Load the RData file containing the ATAC-seq data, RNA-seq data, and peak locations
@@ -231,9 +231,8 @@ head(res$boolean_rules_sorted)
 6                   1                                  0.54:-0.54
 ```
 
-II. Single-cell paired ATAC-seq and RNA-seq datasets
-
-A toy dataset example is provided in example/. Please see following examples for instructions.
+# II. Single-cell paired ATAC-seq and RNA-seq datasets
+# A toy dataset example is provided in example/. Please see following examples for instructions.
 
 
 

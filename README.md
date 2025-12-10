@@ -55,8 +55,6 @@ ocrRBBR infers Boolean rules for chromatin accessibility states based on two typ
 A toy dataset example is provided in example/. Please see following examples for instructions.
 
 ## Inference of OCR-Driven Boolean Rules in Bulk Multiome Datasets
-## Run ocrRBBR_bulk to infer OCR-driven Boolean rules for a gene
-
 ```R
 ocrRBBR_bulk(
   rnaseq_data  = rnaseq_data,      # Matrix of RNA-seq gene expression (genes × samples)
@@ -100,6 +98,7 @@ Returns
 Returns ATAC-seq peaks located within the specified window size (in base pairs) around the TSS of each gene.
 ```
 
+# Example using a mouse multiome dataset
 #### Step 1. Load data
 ```R
 # Load the RData file containing the ATAC-seq data, RNA-seq data, and peak locations

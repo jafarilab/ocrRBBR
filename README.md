@@ -85,11 +85,6 @@ slope	          The slope parameter for the sigmoid activation function. Default
 num_cores	      The number of parallel workers to use for computation. Adjust according to your system. Default is NA (automatic selection).
 ```
 
-Output Explanation
-```bash
-The output of the ocrRBBR_bulk() function is a table containing the predicted Boolean rule sets for the gene. The table includes columns such as the Boolean rule (defining chromatin accessibility states), the adjusted R-squared (R²) value indicating rule fit, the Bayesian Information Criterion (BIC) score reflecting model quality, and the corresponding rule weights. Each row represents a distinct Boolean rule set, providing insights into the regulatory relationships between chromatin peaks and gene expression.
-```
-
 ## `link_peaks_to_tss()` links ATAC-seq peaks to genes based on a user-defined window (±100kb by default) around the TSS (Transcription Start Site).
 ```bash
 linked_peaks <- link_peaks_to_tss(
@@ -98,14 +93,6 @@ linked_peaks <- link_peaks_to_tss(
   gene_list = NA,               # Optional: A list of specific genes to link peaks (default is NA, considering all genes)
   tss_window = NA               # Optional: A custom window size around the TSS (default is ±100kb)
 )
-```
-
-Parameters
-```bash
-gtf_file	Path to the GTF file containing the gene annotations (e.g., from Ensembl or Gencode).
-peaks_gr	A GRanges object containing peak regions (ATAC-seq peaks).
-gene_list	A character vector of gene names to consider. If left empty (default), all genes will be considered.
-tss_window	Peaks located within the default or user-specified window size (in base pairs) around the gene TSS are reported. Default is 100,000 bp.
 ```
 
 Returns

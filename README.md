@@ -82,7 +82,8 @@ max_feature	    An integer specifying the maximum number of input features allow
 slope	          The slope parameter for the sigmoid activation function. Default is 10.
 num_cores	      The number of parallel workers to use for computation. Adjust according to your system. Default is NA (automatic selection).
 ```
-<br><br>
+<br>
+<br>
 
 #### `link_peaks_to_tss()` links ATAC-seq peaks to genes based on a user-defined window (±100kb by default) around the TSS (Transcription Start Site).
 ```bash
@@ -95,7 +96,8 @@ linked_peaks <- link_peaks_to_tss(
 ```
 This function returns ATAC-seq peaks located within the specified window size (in base pairs) around the TSS of each gene.
 
-<br><br>
+<br>
+<br>
 
 # Example using a mouse multiome dataset
 #### Step 1. Load data

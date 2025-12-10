@@ -73,19 +73,19 @@ This function predicts Boolean rules for a given gene based on bulk-level multi-
 
 Parameter Descriptions   
 ```bash
-Required arguments:
+Required arguments
 rnaseq_data  	  A numeric matrix of RNA-seq expression values. Rows correspond to genes, and columns correspond to cell types or samples.
 atacseq_data	  A numeric matrix of ATAC-seq signal intensities. Rows correspond to peaks, and columns correspond to cell types or samples.
 gene_name	      A character string specifying the gene for which to infer Boolean rules.
 peak_ids	      A vector of peak identifiers corresponding to rows in atacseq_data to be used as candidate regulatory regions for gene_name.
 
-Optional arguments:
+Optional arguments
 max_feature	    An integer specifying the maximum number of input features allowed in a Boolean rule. The default is 3.
 slope	          The slope parameter for the sigmoid activation function. Default is 10.
 num_cores	      The number of parallel workers to use for computation. Adjust according to your system. Default is NA (automatic selection).
 ```
 
-Output Columns Explanation
+Output Explanation
 ```bash
 The output of the ocrRBBR_bulk() function is a table containing the predicted Boolean rule sets for the gene. The table includes columns such as the Boolean rule (defining chromatin accessibility states), the adjusted R-squared (R²) value indicating rule fit, the Bayesian Information Criterion (BIC) score reflecting model quality, and the corresponding rule weights. Each row represents a distinct Boolean rule set, providing insights into the regulatory relationships between chromatin peaks and gene expression.
 ```

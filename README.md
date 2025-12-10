@@ -62,41 +62,81 @@ A toy dataset example is provided in example/. Please see following examples for
 <details>
   <summary>Click me</summary>
 
-ocrRBBR_bulk requires RNA-seq expression data (in a matrix format) and ATAC-seq signal intensity data (in a matrix format) as input.
+# Run ocrRBBR_bulk to infer OCR-driven Boolean rules for a gene
+res <- ocrRBBR_bulk(
+  rnaseq_data  = rnaseq_data,      # Matrix of RNA-seq gene expression (genes × samples)
+  atacseq_data = atacseq_data,     # Matrix of ATAC-seq peak accessibility (peaks × samples)
+  gene_name    = "Rag2",           # Gene for which Boolean rules will be inferred
+  peak_ids     = peak_ids,         # Candidate regulatory peaks for this gene
+  max_feature  = 3,                # Maximum number of OCRs allowed in a Boolean rule
+  slope        = 10,               # Slope for sigmoid activation function
+  num_cores    = 8                 # Number of parallel workers for computation
+)
 
-Example: Predict Boolean rules for the gene "Spi1" using RNA-seq and ATAC-seq data, results will be saved in a specified folder.
 
-res <- ocrRBBR_bulk(rnaseq_data, atacseq_data, gene_name = "Spi1", peak_ids = peak_ids, max_feature = 3, slope = 10, num_cores = 8)
+This function predicts Boolean rules for a given gene based on bulk-level multi-omics datasets (RNA-seq and ATAC-seq).
 
-Available parameters:
+Parameters
+Argument	Description
+rnaseq_data	A numeric matrix of RNA-seq expression values. Rows correspond to genes, and columns correspond to cell types or samples.
+atacseq_data	A numeric matrix of ATAC-seq signal intensities. Rows correspond to peaks, and columns correspond to cell types or samples.
+gene_name	A character string specifying the gene for which to infer Boolean rules.
+peak_ids	A vector of peak identifiers corresponding to rows in atacseq_data to be used as candidate regulatory regions for gene_name.
+max_feature	An integer specifying the maximum number of input features allowed in a Boolean rule. The default is 3.
+slope	Numeric. The slope parameter for the sigmoid activation function. Default is 10.
+num_cores	The number of parallel workers to use for computation. Adjust according to your system. Default is NA (automatic selection).
+Returns
 
-Required arguments:
+A list containing:
 
-rnaseq_data : A matrix of RNA-seq expression values (rows: genes, columns: samples/cell types).
+boolean_rules_sorted: The Boolean rules sorted by importance.
 
-atacseq_data : A matrix of ATAC-seq signal intensities (rows: peaks, columns: samples/cell types).
+selected_peaks: The selected peaks used in the Boolean rule.
 
-gene_name : A string specifying the gene for which to infer Boolean rules.
+model_fit: The model fit information.
 
-peak_ids : A vector of peak identifiers from ATAC-seq data to use as candidate regulatory regions for the specified gene.
+info: Additional information on the processing.
 
-Optional arguments:
 
-max_feature : Maximum number of input features allowed in a Boolean rule (default is 3).
+# Call the function 'link_peaks_to_tss' with the necessary parameters
+linked_peaks <- link_peaks_to_tss(
+  gtf_file = gtf_file,          # Path to the GTF file with gene annotations
+  peaks_gr = peaks_gr,          # GRanges object containing ATAC-seq peaks
+  gene_list = NA,               # Optional: A list of specific genes to link peaks (default is NA, considering all genes)
+  tss_window = NA               # Optional: A custom window size around the TSS (default is ±100kb)
+)
 
-slope : Slope parameter for the sigmoid activation function (default is 10).
 
-num_cores : Number of parallel workers to use (default is NA for automatic selection).
+Links ATAC-seq peaks to genes based on a user-defined window (±100kb by default) around the TSS (Transcription Start Site).
 
-Results explanation:
+Parameters
+Argument	Description
+gtf_file	Path to the GTF file containing the gene annotations (e.g., from Ensembl or Gencode).
+peaks_gr	A GRanges object containing peak regions (ATAC-seq peaks).
+gene_list	A character vector of gene names to consider. If left empty (default), all genes will be considered.
+tss_window	The window size (in base pairs) around the TSS to define the promoter region. Default is 100,000 bp.
+Returns
 
-The function will output the predicted Boolean rules for the specified gene, along with associated metrics. The results include:
+A data frame containing the following columns:
 
-Boolean rules: The inferred Boolean rules indicating regulatory relationships between ATAC-seq peaks and gene expression.
+peak: Peak identifiers.
 
-Model fit: Information on the fitted model used to generate the Boolean rules.
+peak_id: Peak ID associated with the ATAC-seq signal.
 
-Additional metrics: Other metrics used for evaluating rule performance.
+gene_id: Gene ID associated with the peak.
+
+gene_name: Gene name associated with the peak.
+
+transcript_id: Transcript ID of the gene.
+
+gene_type: Gene type (e.g., protein-coding, lncRNA).
+
+distance: The distance between the peak center and the TSS.
+
+
+
+
+
 </details>
 
 ## Inference of OCR-Driven Boolean Rules in single-cell Multiome Datasets

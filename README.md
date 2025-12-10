@@ -6,13 +6,9 @@ ocrRBBR is an R package to infer Boolean rules linking chromatin accessibility (
 Features
 
 1. Predict Boolean regulatory rules using bulk-level multiome datasets.
-
 2. Support for single-cell multiome datasets.
-
 3. Handles RNA-seq and ATAC-seq data with matching cell/sample identities.
-
 4. Outputs interpretable Boolean rules with associated metrics.
-
 5. Parallel computing support for faster processing of large datasets.
 
 # Table of Contents
@@ -65,7 +61,7 @@ A toy dataset example is provided in example/. Please see following examples for
 # Run ocrRBBR_bulk to infer OCR-driven Boolean rules for a gene
 
 ```R
-res <- ocrRBBR_bulk(
+ocrRBBR_bulk(
   rnaseq_data  = rnaseq_data,      # Matrix of RNA-seq gene expression (genes × samples)
   atacseq_data = atacseq_data,     # Matrix of ATAC-seq peak accessibility (peaks × samples)
   gene_name    = "Rag2",           # Gene for which Boolean rules will be inferred
@@ -82,12 +78,16 @@ Parameter Descriptions
 ```bash
 Parameters
 Argument	      Description
+
+Required arguments:
 rnaseq_data  	  A numeric matrix of RNA-seq expression values. Rows correspond to genes, and columns correspond to cell types or samples.
 atacseq_data	  A numeric matrix of ATAC-seq signal intensities. Rows correspond to peaks, and columns correspond to cell types or samples.
 gene_name	      A character string specifying the gene for which to infer Boolean rules.
 peak_ids	      A vector of peak identifiers corresponding to rows in atacseq_data to be used as candidate regulatory regions for gene_name.
+
+Optional arguments:
 max_feature	    An integer specifying the maximum number of input features allowed in a Boolean rule. The default is 3.
-slope	Numeric.  The slope parameter for the sigmoid activation function. Default is 10.
+slope	Numeric   The slope parameter for the sigmoid activation function. Default is 10.
 num_cores	      The number of parallel workers to use for computation. Adjust according to your system. Default is NA (automatic selection).
 ```
 

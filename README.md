@@ -55,9 +55,6 @@ ocrRBBR infers Boolean rules for chromatin accessibility states based on two typ
 A toy dataset example is provided in example/. Please see following examples for instructions.
 
 ## Inference of OCR-Driven Boolean Rules in Bulk Multiome Datasets
-<details>
-  <summary>Click me</summary>
-
 # Run ocrRBBR_bulk to infer OCR-driven Boolean rules for a gene
 
 ```R
@@ -259,7 +256,8 @@ head(res$boolean_rules_sorted)
 5                   1                       0.71:-0.8:-1.04:-0.28
 6                   1                                  0.54:-0.54
 ```
-  
-</details>
+
+
+
 
 

@@ -91,17 +91,24 @@ slope	          The slope parameter for the sigmoid activation function. Default
 num_cores	      The number of parallel workers to use for computation. Adjust according to your system. Default is NA (automatic selection).
 ```
 
-Returns
+Output Columns Explanation
+```bash
+The result from the ocrRBBR_bulk function contains a table of Boolean rules, and their corresponding metrics. Each row corresponds to a predicted Boolean rule set for the gene. Below is an explanation of each column in the output:
 
-A list containing:
+Column Name    	Description
+Boolean_Rule	  The Boolean rule for the gene based on chromatin accessibility states. Example: [OR(AND(278352, 278381, 278384), AND(~278352, 278381, 278384))] represents a rule with peaks 278352, 278381, and 278384 interacting in an OR operation.
+R2	            The adjusted R-squared value of the Boolean rule, indicating the fit quality. A value closer to 1 indicates a better fit.
+BIC	            The Bayesian Information Criterion (BIC) score for the model. Lower BIC values indicate a better model fit, penalizing for complexity (more features).
+Input_Size	    The number of input features (peaks) used to form the Boolean rule. This corresponds to the number of peaks used in the logical combination.
+Index	          An index identifier for the specific Boolean rule. This can be used to identify the rule uniquely in the dataset.
+Features	      The specific peak IDs involved in the Boolean rule. This column lists the peaks used in the logical rule. For example: 278352.278381.278384 represents three peaks used in the rule.
+Active_Conjunctions	The number of active conjunctions in the Boolean rule set, describing how many rules (conjunctions) are in the rule set.
+Weights	        The weights associated with each conjunction in the Boolean rule set. These weights represent how strongly each conjunction contributes to the overall rule. For example, 0.46:0.72:0.34:-2.45:-2.17 represents the weights of different rules within the Boolean rule.
+```
 
-boolean_rules_sorted: The Boolean rules sorted by importance.
 
-selected_peaks: The selected peaks used in the Boolean rule.
 
-model_fit: The model fit information.
 
-info: Additional information on the processing.
 
 
 # Call the function 'link_peaks_to_tss' with the necessary parameters

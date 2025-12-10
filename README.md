@@ -63,6 +63,8 @@ A toy dataset example is provided in example/. Please see following examples for
   <summary>Click me</summary>
 
 # Run ocrRBBR_bulk to infer OCR-driven Boolean rules for a gene
+
+```R
 res <- ocrRBBR_bulk(
   rnaseq_data  = rnaseq_data,      # Matrix of RNA-seq gene expression (genes × samples)
   atacseq_data = atacseq_data,     # Matrix of ATAC-seq peak accessibility (peaks × samples)
@@ -72,7 +74,7 @@ res <- ocrRBBR_bulk(
   slope        = 10,               # Slope for sigmoid activation function
   num_cores    = 8                 # Number of parallel workers for computation
 )
-
+```
 
 This function predicts Boolean rules for a given gene based on bulk-level multi-omics datasets (RNA-seq and ATAC-seq).
 

@@ -126,18 +126,8 @@ Returns
 Returns ATAC-seq peaks located within the specified window size (in base pairs) around the TSS of each gene.
 ```
 
-
-
-<details>
-  <summary>Click me</summary>
-</details>
-  
-</details>
-
-
-
+#### Step 1. Load data
 ```R
-#### Load data
 # Load the RData file containing the ATAC-seq data, RNA-seq data, and peak locations
 load("mouse_dataset.RData")
 
@@ -146,21 +136,16 @@ ls()
 [1] "atacseq_data" "peaks_gr"     "rnaseq_data"
 
 # Inspect the GRanges object peaks_gr, which contains peak consensus scores across mammalian genomes and associated peak p-values.
-peaks_gr
-GRanges object with 512595 ranges and 3 metadata columns:
-           seqnames            ranges strand |    peakID phastCons_scores mlog10_bestPvalue
-              <Rle>         <IRanges>  <Rle> | <integer>        <numeric>         <numeric>
-       [1]     chr1   3020761-3020811      * |         1             0.00              0.56
-       [2]     chr1   3087201-3087251      * |         2             0.00              0.50
-       [3]     chr1   3120084-3120134      * |         3             0.07             10.80
-       [4]     chr1   3121460-3121510      * |         4             0.15              3.02
-       [5]     chr1   3372762-3372812      * |         5             0.03              1.31
-       ...      ...               ...    ... .       ...              ...               ...
-  [512591]     chrY 90812425-90812475      * |    512591                0              3.99
-  [512592]     chrY 90812881-90812931      * |    512592                0              3.21
-  [512593]     chrY 90813150-90813200      * |    512593                0              0.69
-  [512594]     chrY 90813599-90813649      * |    512594                0              0.60
-  [512595]     chrY 90828960-90829010      * |    512595                0              1.41
+head(peaks_gr)
+GRanges object with 6 ranges and 3 metadata columns:
+      seqnames          ranges strand |    peakID phastCons_scores mlog10_bestPvalue
+         <Rle>       <IRanges>  <Rle> | <integer>        <numeric>         <numeric>
+  [1]     chr1 3020761-3020811      * |         1             0.00              0.56
+  [2]     chr1 3087201-3087251      * |         2             0.00              0.50
+  [3]     chr1 3120084-3120134      * |         3             0.07             10.80
+  [4]     chr1 3121460-3121510      * |         4             0.15              3.02
+  [5]     chr1 3372762-3372812      * |         5             0.03              1.31
+  [6]     chr1 3399192-3399242      * |         6             0.06              2.39
   -------
   seqinfo: 44 sequences from an unspecified genome; no seqlengths
 
@@ -185,8 +170,7 @@ rnaseq_data[1:5, 1:5]
 0610009O20Rik   168.645852   157.926022     155.94164   186.261464  162.584556
 ```
 
-
-#### Step 3. Generate a list of peaks located within a ±100kb window around each gene.
+#### Step 2. Generate a list of peaks located within a ±100kb window around each gene.
 ```R
 gene_name <- "Rag2"
 
@@ -216,7 +200,7 @@ linked_peaks
 # 
 ```
 
-#### Step 4. Extract peak GRanges and filter by conservation + pvalue
+#### Step 3. Extract peak GRanges and filter by conservation + pvalue
 ```R
 # -------------------------------
 # Get linked peaks for gene
@@ -249,16 +233,15 @@ peaks_gr_tmp <- peaks_gr_tmp[
 peak_ids <- peaks_gr_tmp$peakID
 ```
 
-#### Step 5. Train the model and output the predicted Boolean regulatory rules.
+#### Step 4. Train the model and output the predicted Boolean regulatory rules.
 ```R
-# -------------------------------
-# 6. Run RBBR
-# -------------------------------
 res <- ocrRBBR_bulk(rnaseq_data, atacseq_data, gene_name, peak_ids, max_feature = 3, slope = 10, num_cores = NA)
+
 ▶️ Starting processing for gene: Rag2 ...
 ✔️ All input checks passed.
 training process started with  8  computing cores
   |====================| 100%
+
 
 head(res$boolean_rules_sorted)
                                                                                                         Boolean_Rule                R2       BIC Input_Size Index             Features
@@ -276,33 +259,7 @@ head(res$boolean_rules_sorted)
 5                   1                       0.71:-0.8:-1.04:-0.28
 6                   1                                  0.54:-0.54
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  
+</details>
 
 

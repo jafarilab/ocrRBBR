@@ -78,15 +78,19 @@ res <- ocrRBBR_bulk(
 
 This function predicts Boolean rules for a given gene based on bulk-level multi-omics datasets (RNA-seq and ATAC-seq).
 
+Parameter Descriptions   
+```bash
 Parameters
-Argument	Description
-rnaseq_data	A numeric matrix of RNA-seq expression values. Rows correspond to genes, and columns correspond to cell types or samples.
-atacseq_data	A numeric matrix of ATAC-seq signal intensities. Rows correspond to peaks, and columns correspond to cell types or samples.
-gene_name	A character string specifying the gene for which to infer Boolean rules.
-peak_ids	A vector of peak identifiers corresponding to rows in atacseq_data to be used as candidate regulatory regions for gene_name.
-max_feature	An integer specifying the maximum number of input features allowed in a Boolean rule. The default is 3.
-slope	Numeric. The slope parameter for the sigmoid activation function. Default is 10.
-num_cores	The number of parallel workers to use for computation. Adjust according to your system. Default is NA (automatic selection).
+Argument	      Description
+rnaseq_data  	  A numeric matrix of RNA-seq expression values. Rows correspond to genes, and columns correspond to cell types or samples.
+atacseq_data	  A numeric matrix of ATAC-seq signal intensities. Rows correspond to peaks, and columns correspond to cell types or samples.
+gene_name	      A character string specifying the gene for which to infer Boolean rules.
+peak_ids	      A vector of peak identifiers corresponding to rows in atacseq_data to be used as candidate regulatory regions for gene_name.
+max_feature	    An integer specifying the maximum number of input features allowed in a Boolean rule. The default is 3.
+slope	Numeric.  The slope parameter for the sigmoid activation function. Default is 10.
+num_cores	      The number of parallel workers to use for computation. Adjust according to your system. Default is NA (automatic selection).
+```
+
 Returns
 
 A list containing:

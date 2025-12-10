@@ -73,9 +73,6 @@ This function predicts Boolean rules for a given gene based on bulk-level multi-
 
 Parameter Descriptions   
 ```bash
-Parameters
-Argument	      Description
-
 Required arguments:
 rnaseq_data  	  A numeric matrix of RNA-seq expression values. Rows correspond to genes, and columns correspond to cell types or samples.
 atacseq_data	  A numeric matrix of ATAC-seq signal intensities. Rows correspond to peaks, and columns correspond to cell types or samples.
@@ -90,13 +87,7 @@ num_cores	      The number of parallel workers to use for computation. Adjust ac
 
 Output Columns Explanation
 ```bash
-The result from the ocrRBBR_bulk function contains a table of Boolean rules, and their corresponding metrics. Each row corresponds to a predicted Boolean rule set for the gene. Below is an explanation of each column in the output:
-
-Column Name    	Description
-Boolean_Rule	  The Boolean rule for the gene based on chromatin accessibility states. Example: [OR(AND(278352, 278381, 278384), AND(~278352, 278381, 278384))] represents a rule with peaks 278352, 278381, and 278384 interacting in an OR operation.
-R2	            The adjusted R-squared value of the Boolean rule, indicating the fit quality. A value closer to 1 indicates a better fit.
-BIC	            The Bayesian Information Criterion (BIC) score for the model. Lower BIC values indicate a better model fit, penalizing for complexity (more features).
-Weights	        The weights associated with each conjunction in the Boolean rule set. These weights represent how strongly each conjunction contributes to the overall rule. For example, 0.46:0.72:0.34:-2.45:-2.17 represents the weights of different rules within the Boolean rule.
+The output of the ocrRBBR_bulk() function is a table containing the predicted Boolean rule sets for the gene. The table includes columns such as the Boolean rule (defining chromatin accessibility states), the adjusted R-squared (R²) value indicating rule fit, the Bayesian Information Criterion (BIC) score reflecting model quality, and the corresponding rule weights. Each row represents a distinct Boolean rule set, providing insights into the regulatory relationships between chromatin peaks and gene expression.
 ```
 
 # `link_peaks_to_tss()` links ATAC-seq peaks to genes based on a user-defined window (±100kb by default) around the TSS (Transcription Start Site).
@@ -111,7 +102,6 @@ linked_peaks <- link_peaks_to_tss(
 
 Parameters
 ```bash
-Argument	Description
 gtf_file	Path to the GTF file containing the gene annotations (e.g., from Ensembl or Gencode).
 peaks_gr	A GRanges object containing peak regions (ATAC-seq peaks).
 gene_list	A character vector of gene names to consider. If left empty (default), all genes will be considered.

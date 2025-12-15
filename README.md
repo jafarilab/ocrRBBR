@@ -272,18 +272,10 @@ meta.data A matrix containing per-cell metadata, including:
           Percentage of mitochondrial reads
 
 Optional arguments
-
-max_feature Maximum number of OCRs allowed in a Boolean rule.
-            Default: 3
-
-slope Slope parameter of the sigmoid activation function used in the model.
-      Default: 10
-
-num_cores Number of parallel workers for computation.
-          Default: NA (automatic selection)
-
-ESS Effective sample size of the single-cell data after accounting for noise and cell-to-cell correlation.
-    Default: NA
+max_feature Maximum number of OCRs allowed in a Boolean rule. Default: 3
+slope Slope parameter of the sigmoid activation function used in the model. Default: 10
+num_cores Number of parallel workers for computation. Default: NA (automatic selection)
+ESS Effective sample size of the single-cell data after accounting for noise and cell-to-cell correlation. Default: NA
 ```
 <br>
 <br>

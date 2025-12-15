@@ -75,7 +75,7 @@ gene_name	      A character string specifying the gene for which to infer Boolea
 peak_ids	      A vector of peak identifiers corresponding to rows in atacseq_data to be used as candidate regulatory regions for gene_name.
 
 Optional arguments
-max_feature     An integer specifying the maximum number of input features allowed in a Boolean rule. The default is 3.
+max_feature       An integer specifying the maximum number of input features allowed in a Boolean rule. The default is 3.
 slope	          The slope parameter for the sigmoid activation function. Default is 10.
 num_cores	      The number of parallel workers to use for computation. Adjust according to your system. Default is NA (automatic selection).
 ```

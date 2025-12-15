@@ -252,30 +252,28 @@ This function infers OCR-driven Boolean regulatory rules for a given gene using 
 
 Parameter Descriptions   
 ```bash
-rnaseq_data A numeric matrix of RNA-seq expression values (genes × cells).
-            RNA-seq values are assumed to be normalized using Seurat’s LogNormalize method with a scale factor of 10,000:
+rnaseq_data      A numeric matrix of RNA-seq expression values (genes × cells).
+                 RNA-seq values are assumed to be normalized using Seurat’s LogNormalize method with a scale factor of 10,000:
+                 NormalizeData(seurat_obj, normalization.method = "LogNormalize", scale.factor = 1e4)
 
-            NormalizeData(seurat_obj, normalization.method = "LogNormalize", scale.factor = 1e4)
+atacseq_data     A numeric matrix of ATAC-seq signal intensities (peaks × cells).
+                 ATAC-seq counts are assumed to be normalized per cell using the ReadsInTSS method, where raw peak counts are divided by the number of Tn5 insertions within transcription start site (TSS) regions.
+                 ReadsInTSS values are typically obtained from ArchR and applied as column-wise scaling factors.
 
+gene_name        A character string specifying the target gene for Boolean rule inference.
 
-atacseq_data A numeric matrix of ATAC-seq signal intensities (peaks × cells).
-             ATAC-seq counts are assumed to be normalized per cell using the ReadsInTSS method, where raw peak counts are divided by the number of Tn5 insertions within transcription start site (TSS) regions.
-             ReadsInTSS values are typically obtained from ArchR and applied as column-wise scaling factors.
+peak_ids         A vector of peak identifiers corresponding to rows in atacseq_data, defining candidate regulatory regions for the gene.
 
-gene_name A character string specifying the target gene for Boolean rule inference.
-
-peak_ids A vector of peak identifiers corresponding to rows in atacseq_data, defining candidate regulatory regions for the gene.
-
-meta.data A matrix containing per-cell metadata, including:
-          RNA counts per cell 
-          Number of detected features per cell
-          Percentage of mitochondrial reads
+meta.data        A matrix containing per-cell metadata, including:
+                 RNA counts per cell 
+                 Number of detected features per cell
+                 Percentage of mitochondrial reads
 
 Optional arguments
-max_feature Maximum number of OCRs allowed in a Boolean rule. Default: 3
-slope Slope parameter of the sigmoid activation function used in the model. Default: 10
-num_cores Number of parallel workers for computation. Default: NA (automatic selection)
-ESS Effective sample size of the single-cell data after accounting for noise and cell-to-cell correlation. Default: NA
+max_feature      Maximum number of OCRs allowed in a Boolean rule. Default: 3
+slope            Slope parameter of the sigmoid activation function used in the model. Default: 10
+num_cores        Number of parallel workers for computation. Default: NA (automatic selection)
+ESS              Effective sample size of the single-cell data after accounting for noise and cell-to-cell correlation. Default: NA
 ```
 <br>
 <br>

@@ -69,15 +69,19 @@ This function predicts Boolean rules for a given gene based on bulk-level multi-
 Parameter Descriptions   
 ```bash
 Required arguments
-rnaseq_data  	  A numeric matrix of RNA-seq expression values. Rows correspond to genes, and columns correspond to cell types or samples.
-atacseq_data	  A numeric matrix of ATAC-seq signal intensities. Rows correspond to peaks, and columns correspond to cell types or samples.
-gene_name	      A character string specifying the gene for which to infer Boolean rules.
-peak_ids	      A vector of peak identifiers corresponding to rows in atacseq_data to be used as candidate regulatory regions for gene_name.
-
-Optional arguments
-max_feature       An integer specifying the maximum number of input features allowed in a Boolean rule. The default is 3.
-slope	          The slope parameter for the sigmoid activation function. Default is 10.
-num_cores	      The number of parallel workers to use for computation. Adjust according to your system. Default is NA (automatic selection).
+# rnaseq_data      A numeric matrix of RNA-seq expression values. Rows correspond to genes, columns correspond to cell types or samples.
+#                  **Note:** *ocrRBBR* was tested using **quantile-normalized RNA-seq data**, but it should also work equally well on **TPM-normalized RNA-seq datasets**, provided the data is appropriately scaled across samples.
+#
+# atacseq_data     A numeric matrix of ATAC-seq signal intensities. Rows correspond to peaks, columns correspond to cell types or samples. Column names must match those of \code{rnaseq_data}.
+#                  **Note:** Similar to RNA-seq data, *ocrRBBR* is tested using **quantile-normalized ATAC-seq data** but is expected to work with other normalization methods, as long as the data distributions are comparable across samples.
+#
+# gene_name	       A character string specifying the gene for which to infer Boolean rules.
+# peak_ids	       A vector of peak identifiers corresponding to rows in atacseq_data to be used as candidate regulatory regions for gene_name.
+#
+# Optional arguments
+# max_feature        An integer specifying the maximum number of input features allowed in a Boolean rule. The default is 3.
+# slope	           The slope parameter for the sigmoid activation function. Default is 10.
+#num_cores	       The number of parallel workers to use for computation. Adjust according to your system. Default is NA (automatic selection).
 ```
 <br>
 <br>

@@ -69,10 +69,12 @@ This function predicts Boolean rules for a given gene based on bulk-level multi-
 Parameter Descriptions   
 ```bash
 Required arguments
-# rnaseq_data    A numeric matrix of RNA-seq expression values. Rows correspond to genes, columns correspond to cell types or samples.
+# rnaseq_data    A numeric matrix of RNA-seq expression values.
+#                Rows correspond to genes, columns correspond to cell types or samples.
 #                **Note:** *ocrRBBR* was tested using **quantile-normalized RNA-seq data**, but it should also work equally well on **TPM-normalized RNA-seq datasets**, provided the data is appropriately scaled across samples.
 #
-# atacseq_data   A numeric matrix of ATAC-seq signal intensities. Rows correspond to peaks, columns correspond to cell types or samples. Column names must match those of \code{rnaseq_data}.
+# atacseq_data   A numeric matrix of ATAC-seq signal intensities.
+#                Rows correspond to peaks, columns correspond to cell types or samples. Column names must match those of \code{rnaseq_data}.
 #                **Note:** Similar to RNA-seq data, *ocrRBBR* is tested using **quantile-normalized ATAC-seq data** but is expected to work with other normalization methods, as long as the data distributions are comparable across samples.
 #
 # gene_name	     A character string specifying the gene for which to infer Boolean rules.
@@ -81,7 +83,7 @@ Required arguments
 # Optional arguments
 # max_feature    An integer specifying the maximum number of input features allowed in a Boolean rule. The default is 3.
 # slope	         The slope parameter for the sigmoid activation function. Default is 10.
-#num_cores	     The number of parallel workers to use for computation. Adjust according to your system. Default is NA (automatic selection).
+# num_cores	     The number of parallel workers to use for computation. Adjust according to your system. Default is NA (automatic selection).
 ```
 <br>
 <br>
@@ -150,7 +152,7 @@ rnaseq_data[1:5, 1:5]
 gene_name <- "Rag2"
 
 linked_peaks <- link_peaks_to_tss(
-  gtf_file = "D:\\PBMC\\mm10\\gencode.vM25.annotation.gtf",
+  gtf_file = "\path_to\gencode.vM25.annotation.gtf",
   peaks_gr = peaks_gr,
   gene_list = gene_name, 
   tss_window = 100000 # ±100kb
@@ -256,9 +258,9 @@ This function infers OCR-driven Boolean regulatory rules for a given gene using 
 
 Parameter Descriptions   
 ```bash
-# rnaseq_data     A numeric matrix of RNA-seq expression values (genes × cells).
-#                 RNA-seq values are assumed to be normalized using Seurat’s LogNormalize method with a scale factor of 10,000:
-#                 NormalizeData(seurat_obj, normalization.method = "LogNormalize", scale.factor = 1e4)
+# rnaseq_data    A numeric matrix of RNA-seq expression values (genes × cells).
+#                RNA-seq values are assumed to be normalized using Seurat’s LogNormalize method with a scale factor of 10,000:
+#                NormalizeData(seurat_obj, normalization.method = "LogNormalize", scale.factor = 1e4)
 
 # atacseq_data   A numeric matrix of ATAC-seq signal intensities (peaks × cells).
 #                ATAC-seq counts are assumed to be normalized per cell using the ReadsInTSS method, where raw peak counts are divided by the number of Tn5 insertions within transcription start site (TSS) regions.
@@ -360,7 +362,7 @@ AAACAGCCAGGATAAC-1       2759         1353   6.922798
 gene_name <- "ZEB2"
 
 linked_peaks <- link_peaks_to_tss(
-  gtf_file = "D:\\PBMC\\gencode.v48.basic.annotation.gtf",
+  gtf_file = "\path_to\gencode.v48.basic.annotation.gtf",
   peaks_gr = peaks_gr,
   gene_list = gene_name, 
   tss_window = 250000 # ±250kb

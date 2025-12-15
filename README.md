@@ -68,7 +68,7 @@ This function predicts Boolean rules for a given gene based on bulk-level multi-
 
 Parameter Descriptions   
 ```bash
-Required arguments
+# Required arguments
 # rnaseq_data    A numeric matrix of RNA-seq expression values.
 #                Rows correspond to genes, columns correspond to cell types or samples.
 #                **Note:** *ocrRBBR* was tested using **quantile-normalized RNA-seq data**, but it should also work equally well on **TPM-normalized RNA-seq datasets**, provided the data is appropriately scaled across samples.

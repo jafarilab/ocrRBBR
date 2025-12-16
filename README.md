@@ -85,8 +85,6 @@ Parameter Descriptions
 # num_cores	     The number of parallel workers to use for computation. Adjust according to your system. Default is NA (automatic selection).
 ```
 <br>
-<br>
-
 #### `link_peaks_to_tss()` links ATAC-seq peaks to genes based on a user-defined window (±100kb by default) around the TSS (Transcription Start Site).
 ```bash
 linked_peaks <- link_peaks_to_tss(
@@ -96,11 +94,7 @@ linked_peaks <- link_peaks_to_tss(
   tss_window = NA               # Optional: A custom window size around the TSS (default is ±100kb)
 )
 ```
-This function returns ATAC-seq peaks located within the specified window size (in base pairs) around the TSS of each gene.
-
 <br>
-<br>
-
 ## Example using a mouse multiome dataset
 #### Step 1. Load data
 ```R

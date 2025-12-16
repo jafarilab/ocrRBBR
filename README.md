@@ -48,10 +48,9 @@ install.packages("path/to/RBBR_0.1.0.tar.gz", repos = NULL, type = "source")
 <br>
 
 # Usage
-# I. Bulk paired ATAC-seq and RNA-seq datasets
-
+# I. Inference of OCR-Driven Boolean Rules in Bulk Multiome Datasets
 A toy dataset example is provided in example/. Please see following examples for instructions.
-#### Inference of OCR-Driven Boolean Rules in Bulk Multiome Datasets
+
 ```R
 ocrRBBR_bulk(
   rnaseq_data  = rnaseq_data,      # Matrix of RNA-seq gene expression (genes × samples)

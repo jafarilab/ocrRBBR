@@ -362,7 +362,7 @@ AAACAGCCACACTAAT-1       1733          846  18.003462
 AAACAGCCACCAACCG-1       5415         2282   6.500462
 AAACAGCCAGGATAAC-1       2759         1353   6.922798
 
-
+# Inspect cell_data
 head(cell_data)
                               cell_id predicted_celltype_l1 predicted_celltype_l2
 AAACAGCCAAGGAATC-1 AAACAGCCAAGGAATC-1                 CD4 T             CD4 Naive

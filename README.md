@@ -74,7 +74,8 @@ Parameter Descriptions
 #                **Note:** *ocrRBBR* was tested using **quantile-normalized RNA-seq data**, but it should also work equally well on **TPM-normalized RNA-seq datasets**, provided the data is appropriately scaled across samples.
 #
 # atacseq_data   A numeric matrix of ATAC-seq signal intensities.
-#                Rows correspond to peaks, columns correspond to cell types or samples. Column names must match those of \code{rnaseq_data}.
+#                Rows correspond to peaks, columns correspond to cell types or samples.
+#                Column names must match those of rnaseq_data.
 #                **Note:** Similar to RNA-seq data, *ocrRBBR* is tested using **quantile-normalized ATAC-seq data** but is expected to work with other normalization methods, as long as the data distributions are comparable across samples.
 #
 # gene_name	     A character string specifying the gene for which to infer Boolean rules.
@@ -261,7 +262,7 @@ Parameter Descriptions
 # rnaseq_data    A numeric matrix of RNA-seq expression values (genes × cells).
 #                RNA-seq values are assumed to be normalized using Seurat’s LogNormalize method with a scale factor of 10,000:
 #                NormalizeData(seurat_obj, normalization.method = "LogNormalize", scale.factor = 1e4)
-
+#
 # atacseq_data   A numeric matrix of ATAC-seq signal intensities (peaks × cells).
 #                ATAC-seq counts are assumed to be normalized per cell using the ReadsInTSS method, where raw peak counts are divided by the number of Tn5 insertions within transcription start site (TSS) regions.
 #                ReadsInTSS values are typically obtained from ArchR and applied as column-wise scaling factors.
@@ -274,7 +275,7 @@ Parameter Descriptions
 #                RNA counts per cell 
 #                Number of detected features per cell
 #                Percentage of mitochondrial reads
-
+#
 # Optional arguments
 # max_feature    Maximum number of OCRs allowed in a Boolean rule. Default: 3
 # slope          Slope parameter of the sigmoid activation function used in the model. Default: 10

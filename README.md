@@ -51,6 +51,7 @@ install.packages("path/to/RBBR_0.1.0.tar.gz", repos = NULL, type = "source")
 # I. Inference of OCR-Driven Boolean Rules in Bulk Multiome Datasets
 A toy dataset example is provided in example/. Please see following examples for instructions.
 
+`ocrRBBR_single_cell()` predicts Boolean rules for a given gene based on bulk-level multi-omics datasets (RNA-seq and ATAC-seq).
 ```R
 ocrRBBR_bulk(
   rnaseq_data  = rnaseq_data,      # Matrix of RNA-seq gene expression (genes × samples)
@@ -62,8 +63,6 @@ ocrRBBR_bulk(
   num_cores    = 8                 # Number of parallel workers for computation
 )
 ```
-
-This function predicts Boolean rules for a given gene based on bulk-level multi-omics datasets (RNA-seq and ATAC-seq).
 
 Parameter Descriptions   
 ```bash
@@ -243,6 +242,7 @@ head(res$boolean_rules_sorted)
 # II. Inference of OCR-Driven Boolean Rules in single-cell Multiome Datasets
 A toy dataset example is provided in example/. Please see following examples for instructions.
 
+`ocrRBBR_single_cell()` infers OCR-driven Boolean regulatory rules for a given gene using single-cell paired RNA-seq and ATAC-seq multiome data, integrating chromatin accessibility states in gene-flanking regions with gene expression across cells.
 ```R
 ocrRBBR_single_cell(
   rnaseq_data  = rnaseq_data,      # RNA-seq expression matrix (genes × cells)
@@ -256,8 +256,6 @@ ocrRBBR_single_cell(
   meta.data    = meta.data         # Per-cell metadata (QC metrics)
 )
 ```
-
-This function infers OCR-driven Boolean regulatory rules for a given gene using single-cell paired RNA-seq and ATAC-seq multiome data, integrating chromatin accessibility states in gene-flanking regions with gene expression across cells.
 
 Parameter Descriptions   
 ```bash
@@ -295,8 +293,6 @@ linked_peaks <- link_peaks_to_tss(
   tss_window = NA               # Optional: A custom window size around the TSS (default is ±100kb)
 )
 ```
-This function returns ATAC-seq peaks located within the specified window size (in base pairs) around the TSS of each gene.
-
 
 <br>
 <br>

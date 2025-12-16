@@ -394,10 +394,10 @@ linked_peaks
 # ℹ Use `print(n = ...)` to see more rows
 ```
 
-#### Step 3. Extract peak GRanges and filter by conservation + pvalue
+#### Step 3. Extract peak GRanges
 ```R
 # -------------------------------
-# 1. Get linked peaks for gene
+# Get linked peaks for gene
 # -------------------------------
 linked_peaks_gene <- linked_peaks[linked_peaks$gene_name == gene_name, ]
 if(nrow(linked_peaks_gene) == 0){
@@ -406,9 +406,14 @@ if(nrow(linked_peaks_gene) == 0){
 
 peak_ids <- linked_peaks_gene$peak_id
 
-#### Step 4. Train the model and output the predicted Boolean regulatory rules.
+#### Step 4. Estimate Effective Sample Size (ESS) from Single-Cell RNA-seq Data
 ```R
-res <- ocrRBBR_single_cell(rnaseq_data, atacseq_data, gene_name, peak_ids, max_feature = NA, slope = 6, num_cores = NA, ESS = NA, meta.data)
+ess_value <- ESS(rnaseq_data = rnaseq_data, cell_data = cell_data)
+```
+
+#### Step 5. Train the model and output the predicted Boolean regulatory rules.
+```R
+res <- ocrRBBR_single_cell(rnaseq_data, atacseq_data, gene_name, peak_ids, max_feature = NA, slope = 6, num_cores = NA, ESS = ess_value, meta.data)
 
 ▶️ Starting processing for gene: ZEB2 ...
 ✔️ All input checks passed.

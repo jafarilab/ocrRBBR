@@ -237,6 +237,9 @@ head(res$boolean_rules_sorted)
 6                   1                                  0.54:-0.54
 ```
 
+<br>
+<br>
+
 # II. Inference of OCR-Driven Boolean Rules in single-cell Multiome Datasets
 A toy dataset example is provided in example/. Please see following examples for instructions.
 
@@ -281,7 +284,6 @@ Parameter Descriptions
 # num_cores      Number of parallel workers for computation. Default: NA (automatic selection)
 # ESS            Effective sample size of the single-cell data after accounting for noise and cell-to-cell correlation. Default: NA
 ```
-<br>
 <br>
 
 #### `link_peaks_to_tss()` links ATAC-seq peaks to genes based on a user-defined window (±100kb by default) around the TSS (Transcription Start Site).

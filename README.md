@@ -291,6 +291,21 @@ linked_peaks <- link_peaks_to_tss(
 ```
 <br>
 
+#### `ESS()` estimates the effective sample size (ESS) of single-cell RNA-seq data by accounting for correlation among cells within the same cell type.
+```bash
+ess <- ESS(
+  rnaseq_data = rnaseq_data,   # Normalized RNA-seq expression matrix (genes × cells)
+  cell_data   = cell_data      # Cell-level metadata with cell type annotations
+)
+```
+
+Parameter Descriptions   
+```bash
+# rnaseq_data must be a numeric matrix with genes as rows and cells as columns. RNA-seq data should be normalized (e.g., Seurat LogNormalize, scale factor = 10,000).
+# cell_data must be a data frame whose row names match the column names of rnaseq_data. cell_data must contain a column named predicted_celltype_l2.
+```
+<br>
+
 ## Example using a human single-cell multiome dataset
 #### Step 1. Load data
 ```R

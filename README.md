@@ -314,7 +314,7 @@ load("human_dataset.RData")
 
 # List all objects in the current R environment
 ls()
-[1] "atacseq_data" "meta.data"    "peaks_gr"     "rnaseq_data" 
+[1] "atacseq_data" "cell_data"    "meta.data"    "peaks_gr"     "rnaseq_data" 
 
 # Inspect the GRanges object peaks_gr, which contains peak consensus scores across mammalian genomes and associated peak p-values.
 head(peaks_gr)
@@ -362,6 +362,15 @@ AAACAGCCACACTAAT-1       1733          846  18.003462
 AAACAGCCACCAACCG-1       5415         2282   6.500462
 AAACAGCCAGGATAAC-1       2759         1353   6.922798
 
+
+head(cell_data)
+                              cell_id predicted_celltype_l1 predicted_celltype_l2
+AAACAGCCAAGGAATC-1 AAACAGCCAAGGAATC-1                 CD4 T             CD4 Naive
+AAACAGCCAATCCCTT-1 AAACAGCCAATCCCTT-1                 CD4 T               CD4 TCM
+AAACAGCCAATGCGCT-1 AAACAGCCAATGCGCT-1                 CD4 T             CD4 Naive
+AAACAGCCACACTAAT-1 AAACAGCCACACTAAT-1                 CD8 T             CD8 Naive
+AAACAGCCACCAACCG-1 AAACAGCCACCAACCG-1                 CD8 T             CD8 Naive
+AAACAGCCAGGATAAC-1 AAACAGCCAGGATAAC-1                 CD4 T             CD4 Naive
 ```
 
 #### Step 2. Generate a list of peaks located within a ±250kb window around each gene.

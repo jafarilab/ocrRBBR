@@ -15,8 +15,8 @@ Features
 - [Dependency](#Dependency)
 - [Installation](#Installation)
 - [Usage](#Usage)
-  - [Inference of OCR-Driven Boolean Rules in Bulk Multiome Datasets](#usage1)
-  - [Inference of OCR-Driven Boolean Rules in single-cell Multiome Datasets](#usage2)
+  - [Inference of OCR-Driven Boolean Rules in Bulk Multiome Datasets](#Usage1)
+  - [Inference of OCR-Driven Boolean Rules in single-cell Multiome Datasets](#Usage2)
 
 # Dependency
 Please ensure that the required libraries from the following list are installed and loaded. 
@@ -48,6 +48,7 @@ install.packages("path/to/RBBR_0.1.0.tar.gz", repos = NULL, type = "source")
 <br>
 
 # Usage
+# Usage1
 # I. Bulk paired ATAC-seq and RNA-seq datasets
 
 A toy dataset example is provided in example/. Please see following examples for instructions.
@@ -299,6 +300,7 @@ This function returns ATAC-seq peaks located within the specified window size (i
 <br>
 <br>
 
+# Usage2
 ## Example using a human single-cell multiome dataset
 #### Step 1. Load data
 ```R

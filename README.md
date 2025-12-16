@@ -48,7 +48,6 @@ install.packages("path/to/RBBR_0.1.0.tar.gz", repos = NULL, type = "source")
 <br>
 
 # Usage
-# Usage1
 # I. Bulk paired ATAC-seq and RNA-seq datasets
 
 A toy dataset example is provided in example/. Please see following examples for instructions.
@@ -300,7 +299,6 @@ This function returns ATAC-seq peaks located within the specified window size (i
 <br>
 <br>
 
-# Usage2
 ## Example using a human single-cell multiome dataset
 #### Step 1. Load data
 ```R

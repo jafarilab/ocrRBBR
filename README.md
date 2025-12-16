@@ -297,6 +297,7 @@ linked_peaks <- link_peaks_to_tss(
 ```
 This function returns ATAC-seq peaks located within the specified window size (in base pairs) around the TSS of each gene.
 
+
 <br>
 <br>
 

@@ -405,6 +405,7 @@ if(nrow(linked_peaks_gene) == 0){
 }
 
 peak_ids <- linked_peaks_gene$peak_id
+```
 
 #### Step 4. Estimate Effective Sample Size (ESS) from Single-Cell RNA-seq Data
 ```R

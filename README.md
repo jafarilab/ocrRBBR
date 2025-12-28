@@ -4,12 +4,9 @@ Predict OCR-driven Boolean rules from multi-omics datasets
 ocrRBBR is an R package to infer Boolean rules linking chromatin accessibility (ATAC-seq peaks) to gene expression (RNA-seq) in both bulk and single-cell multiomic datasets. The package identifies combinations of OCRs (Open Chromatin Regions) that best predict the expression state of a target gene.
 
 Features
-
-1. Predict Boolean regulatory rules using bulk-level multiome datasets.
-2. Support for single-cell multiome datasets.
-3. Handles RNA-seq and ATAC-seq data with matching cell/sample identities.
-4. Outputs interpretable Boolean rules with associated metrics.
-5. Parallel computing support for faster processing of large datasets.
+- Supports bulk and single-cell multiome data with paired RNA-seq and ATAC-seq per cell or sample.
+- Outputs interpretable Boolean rules with associated performance metrics.
+- Enables parallel computing for faster processing of large datasets.
 
 <br>
 

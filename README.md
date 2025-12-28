@@ -11,12 +11,15 @@ Features
 4. Outputs interpretable Boolean rules with associated metrics.
 5. Parallel computing support for faster processing of large datasets.
 
+<br>
+
+## Data Requirements and Normalization
 - RNA-seq (bulk): Data are quantile-normalized or TPM-normalized to adjust for sequencing depth and gene length.
 - ATAC-seq (bulk): Signal intensities are quantile-normalized to adjust for sequencing depth differences across samples.
 - Single-cell RNA-seq: LogNormalized with a scale factor of 10,000 (using Seurat).
 - Single-cell ATAC-seq: Normalized using the ReadsInTSS method to adjust for cell-specific variations in sequencing depth.
 - ocrRBBR is data-efficient and works well even with small sample sizes. Unlike neural networks, which require many parameters, ocrRBBR uses ridge regression with fewer parameters, making it suitable for datasets with limited samples. It has been tested on both bulk (85 cell types) and single-cell (9,834 cells) datasets and performs similarly on smaller single-cell datasets. 
-
+- In ocrRBBR, samples do not need to originate from the same tissue or cell type. When samples are from the same cell type or tissue, ocrRBBR partitions them into more homogeneous groups, each associated with a distinct Boolean rule within the inferred rule set.
 
 # Table of Contents
 - [Dependency](#Dependency)

@@ -249,7 +249,7 @@ head(boolean_rules)
 <br>
 
 # II. Inference of OCR-Driven Boolean Rules in single-cell Multiome Datasets
-A toy dataset example is provided in example/. Please see following examples for instructions.
+A toy dataset example is provided in Data/. Please see following examples for instructions.
 
 `ocrRBBR_single_cell()` infers OCR-driven Boolean regulatory rules for a given gene using single-cell paired RNA-seq and ATAC-seq multiome data, integrating chromatin accessibility states in gene-flanking regions with gene expression across cells.
 ```R
@@ -273,23 +273,23 @@ Parameter Descriptions
 #                NormalizeData(seurat_obj, normalization.method = "LogNormalize", scale.factor = 1e4)
 #
 # atacseq_data   A numeric matrix of ATAC-seq signal intensities (peaks × cells).
-#                ATAC-seq counts are assumed to be normalized per cell using the ReadsInTSS method, where raw peak counts are divided by the number of Tn5 insertions within transcription start site (TSS) regions.
+#                ATAC-seq counts are assumed to be normalized per cell using the ReadsInTSS method, where raw peak counts are divided by the number of Tn5 insertions within transcription start site (TSS) regions for each cell.
 #                ReadsInTSS values are typically obtained from ArchR and applied as column-wise scaling factors.
 #
 # gene_name      A character string specifying the target gene for Boolean rule inference.
 #
 # peak_ids       A vector of peak identifiers corresponding to rows in atacseq_data, defining candidate regulatory regions for the gene.
 #
-# meta.data      A matrix containing per-cell metadata, including:
-#                RNA counts per cell 
-#                Number of detected features per cell
+# meta_data      A matrix containing per-cell metadata, including:
+#                nCount_RNA
+#                nFeature_RNA
 #                Percentage of mitochondrial reads
 #
 # Optional arguments
-# max_feature    Maximum number of OCRs allowed in a Boolean rule. Default: 3
-# slope          Slope parameter of the sigmoid activation function used in the model. Default: 10
-# num_cores      Number of parallel workers for computation. Default: NA (automatic selection)
-# ESS            Effective sample size of the single-cell data after accounting for noise and cell-to-cell correlation. Default: NA
+# max_feature    Maximum number of OCRs allowed in a Boolean rule. Default is 3.
+# slope          Slope parameter of the sigmoid activation function used in the model. Default is 10.
+# num_cores      Number of parallel workers for computation. Default is NA (automatic selection).
+# ESS            Effective sample size of the single-cell data after accounting for noise and cell-to-cell correlation. Default is NA.
 ```
 <br>
 
@@ -308,14 +308,14 @@ linked_peaks <- link_peaks_to_tss(
 ```bash
 ess <- ESS(
   rnaseq_data = rnaseq_data,   # Normalized RNA-seq expression matrix (genes × cells)
-  cell_data   = cell_data      # Cell-level metadata with cell type annotations
+  cell_type   = cell_type      # Cell-level metadata with cell type annotations
 )
 ```
 
 Parameter Descriptions   
 ```bash
 # rnaseq_data must be a numeric matrix with genes as rows and cells as columns. RNA-seq data should be normalized (e.g., Seurat LogNormalize, scale factor = 10,000).
-# cell_data must be a data frame whose row names match the column names of rnaseq_data. cell_data must contain a column named predicted_celltype_l2.
+# cell_data must be a data frame whose row names match the column names of rnaseq_data. cell_data must contain a column named cell_type specifying cell types.
 ```
 <br>
 
@@ -323,14 +323,10 @@ Parameter Descriptions
 #### Step 1. Load data
 ```R
 # Load the RData file containing the ATAC-seq data, RNA-seq data, and peak locations
-load("human_dataset.RData")
-
-# List all objects in the current R environment
-ls()
-[1] "atacseq_data" "cell_data"    "meta.data"    "peaks_gr"     "rnaseq_data" 
+data(multiome_human_mouse)
 
 # Inspect the GRanges object peaks_gr, which contains peak consensus scores across mammalian genomes and associated peak p-values.
-head(peaks_gr)
+head(human_peaks_gr)
 GRanges object with 6 ranges and 1 metadata column:
       seqnames        ranges strand |    peakID
          <Rle>     <IRanges>  <Rle> | <integer>

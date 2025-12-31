@@ -114,11 +114,11 @@ linked_peaks <- link_peaks_to_tss(
 #### Step 1. Load data
 ```R
 # Load the RData file containing the ATAC-seq data, RNA-seq data, and peak locations
-load("mouse_dataset.RData")
+data(multiome_human_mouse)
 
 # List all objects in the current R environment
 ls()
-[1] "atacseq_data" "peaks_gr"     "rnaseq_data"
+[1] "human_atacseq_data" "human_cell_type"    "human_meta_data"    "human_peaks_gr"     "human_rnaseq_data"  "mouse_atacseq_data" "mouse_peaks_gr"     "mouse_rnaseq_data" 
 
 # Inspect the GRanges object peaks_gr, which contains peak consensus scores across mammalian genomes and associated peak p-values.
 head(peaks_gr)

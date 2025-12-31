@@ -236,7 +236,7 @@ head(boolean_rules)
 6                                                                                                       [278384] 0.73 -304.67                                  0.54:-0.54
 
 
-# Top-ranked rules (high R², low BIC) highlight minimal yet robust combinations of OCRs that are most predictive of gene regulation.
+# Top-ranked rule sets (high R², low BIC) highlight minimal yet robust combinations of OCRs that are most predictive of gene regulation.
 
 # Each row represents a Boolean rule set linking chromatin accessibility (OCRs; indexed by peak IDs) to gene expression.
 # Boolean_Rule shows the logical combinations of peaks (using AND and NOT, ¬) that best explain the gene’s expression pattern. Multiple AND clauses indicate alternative regulatory configurations that lead to similar transcriptional outcomes.
@@ -467,7 +467,7 @@ head(boolean_rules)
 5                                                                                      [AND(83456,83482),AND(83456,¬83482)] 0.41 229.00                      0.62:-0.42:0.17:-0.36
 6 [AND(83456,83458,83460),AND(¬83456,83458,83460),AND(83456,¬83458,83460),AND(83456,83458,¬83460),AND(83456,¬83458,¬83460)] 0.43 241.97 0.43:0.38:0.26:0.55:-0.53:-0.58:0.01:-0.83
 
-# Top-ranked rules (high R², low BIC) highlight minimal yet robust combinations of OCRs that are most predictive of gene regulation.
+# Top-ranked rule sets (high R², low BIC) highlight minimal yet robust combinations of OCRs that are most predictive of gene regulation.
 
 # Each row represents a Boolean rule set linking chromatin accessibility (OCRs; indexed by peak IDs) to gene expression.
 # Boolean_Rule shows the logical combinations of peaks (using AND and NOT, ¬) that best explain the gene’s expression pattern. Multiple AND clauses indicate alternative regulatory configurations that lead to similar transcriptional outcomes.

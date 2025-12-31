@@ -315,7 +315,7 @@ ess <- ESS(
 Parameter Descriptions   
 ```bash
 # rnaseq_data must be a numeric matrix with genes as rows and cells as columns. RNA-seq data should be normalized (e.g., Seurat LogNormalize, scale factor = 10,000).
-# cell_data must be a data frame whose row names match the column names of rnaseq_data. cell_data must contain a column named cell_type specifying cell types.
+# cell_type is a data frame with row names matching the columns of rnaseq_data and a required column named cell_type indicating cell identities.
 ```
 <br>
 
@@ -340,19 +340,19 @@ GRanges object with 6 ranges and 1 metadata column:
   seqinfo: 33 sequences from an unspecified genome; no seqlengths
 
 # Inspect the atacseq_data matrix, where rows correspond to peaks and columns correspond to cell types.
-# The values represent quantile-normalized ATAC-seq signal intensities.
-atacseq_data[1:5, 1:5]
+# The values represent normalized ATAC-seq counts per cell, using the ReadsInTSS method.
+human_atacseq_data[1:5, 1:5]
 5 x 5 sparse Matrix of class "dgCMatrix"
-  AAACAGCCAAGGAATC-1 AAACAGCCAATCCCTT-1 AAACAGCCAATGCGCT-1 AAACAGCCACACTAAT-1 AAACAGCCACCAACCG-1
-1                  .                  .                  .                  .                  .
-2                  .                  .                  .                  .                  .
-3                  .                  .                  .                  .                  .
-4                  .                  .                  .                  .                  .
-5                  .                  .                  .                  .                  .
+      AAACAGCCAAGGAATC-1 AAACAGCCAATCCCTT-1 AAACAGCCAATGCGCT-1 AAACAGCCACACTAAT-1 AAACAGCCACCAACCG-1
+83441                  .                  .                  .                  .                  .
+83442                  .                  .                  .                  .                  .
+83443                  .                  .                  .                  .                  .
+83444                  .                  .                  .                  .                  .
+83445                  .                  .                  .                  .                  .
 
 # Inspect the rnaseq_data matrix, where rows correspond to genes and columns correspond to cell types.
-# The values represent quantile-normalized RNA-seq signal intensities.
-rnaseq_data[1:5, 1:5]
+# The values represent normalized RNA-seq signal intensities, calculated using Seurat's LogNormalize method with a scale factor of 10,000..
+human_rnaseq_data[1:5, 1:5]
 5 x 5 sparse Matrix of class "dgCMatrix"
             AAACAGCCAAGGAATC-1 AAACAGCCAATCCCTT-1 AAACAGCCAATGCGCT-1 AAACAGCCACACTAAT-1 AAACAGCCACCAACCG-1
 MIR1302-2HG                  .                  .                  .                  .                  .
@@ -361,8 +361,8 @@ OR4F5                        .                  .                  .            
 AL627309.1                   .                  .                  .                  .                  .
 AL627309.3                   .                  .                  .                  .                  .
 
-# Inspect metadata
-head(meta.data)
+# Inspect meta data
+head(human_meta_data)
                    nCount_RNA nFeature_RNA percent.mt
 AAACAGCCAAGGAATC-1       8380         3308   7.470167
 AAACAGCCAATCCCTT-1       3771         1896  10.527711
@@ -371,58 +371,54 @@ AAACAGCCACACTAAT-1       1733          846  18.003462
 AAACAGCCACCAACCG-1       5415         2282   6.500462
 AAACAGCCAGGATAAC-1       2759         1353   6.922798
 
-# Inspect cell_data
-head(cell_data)
-                              cell_id predicted_celltype_l1 predicted_celltype_l2
-AAACAGCCAAGGAATC-1 AAACAGCCAAGGAATC-1                 CD4 T             CD4 Naive
-AAACAGCCAATCCCTT-1 AAACAGCCAATCCCTT-1                 CD4 T               CD4 TCM
-AAACAGCCAATGCGCT-1 AAACAGCCAATGCGCT-1                 CD4 T             CD4 Naive
-AAACAGCCACACTAAT-1 AAACAGCCACACTAAT-1                 CD8 T             CD8 Naive
-AAACAGCCACCAACCG-1 AAACAGCCACCAACCG-1                 CD8 T             CD8 Naive
-AAACAGCCAGGATAAC-1 AAACAGCCAGGATAAC-1                 CD4 T             CD4 Naive
+# Inspect cell_type
+head(human_cell_type)
+                              cell_id cell_type
+AAACAGCCAAGGAATC-1 AAACAGCCAAGGAATC-1 CD4 Naive
+AAACAGCCAATCCCTT-1 AAACAGCCAATCCCTT-1   CD4 TCM
+AAACAGCCAATGCGCT-1 AAACAGCCAATGCGCT-1 CD4 Naive
+AAACAGCCACACTAAT-1 AAACAGCCACACTAAT-1 CD8 Naive
+AAACAGCCACCAACCG-1 AAACAGCCACCAACCG-1 CD8 Naive
+AAACAGCCAGGATAAC-1 AAACAGCCAGGATAAC-1 CD4 Naive
 ```
 
 #### Step 2. Generate a list of peaks located within a ±250kb window around each gene.
 ```R
 # Generate a list of peaks located within a ±100kb window around each gene.
-gene_name <- "ZEB2"
+gene_name <- "CD74"
 
 linked_peaks <- link_peaks_to_tss(
-  gtf_file = "\path_to\gencode.v48.basic.annotation.gtf",
-  peaks_gr = peaks_gr,
+  gtf_file = system.file("extdata", "gencode.v48.basic.annotation.sample.gtf", package = "ocrRBBR"),
+  peaks_gr = human_peaks_gr,
   gene_list = gene_name, 
   tss_window = 250000 # ±250kb
 )
 
 linked_peaks
-# A tibble: 81 × 7
+# A tibble: 43 × 7
    peak                     gene_id         gene_name gene_type      transcript_id   peak_id min_distance
    <chr>                    <chr>           <chr>     <chr>          <chr>             <int>        <dbl>
- 1 chr2:144183459-144184399 ENSG00000169554 ZEB2      protein_coding ENST00000638087   57884      247004.
- 2 chr2:144190904-144191615 ENSG00000169554 ZEB2      protein_coding ENST00000638087   57885      239674 
- 3 chr2:144197988-144198604 ENSG00000169554 ZEB2      protein_coding ENST00000638087   57886      232638.
- 4 chr2:144216246-144216612 ENSG00000169554 ZEB2      protein_coding ENST00000638087   57887      214504.
- 5 chr2:144227723-144227793 ENSG00000169554 ZEB2      protein_coding ENST00000638087   57888      203176.
- 6 chr2:144233311-144233665 ENSG00000169554 ZEB2      protein_coding ENST00000638087   57889      197446.
- 7 chr2:144234277-144234821 ENSG00000169554 ZEB2      protein_coding ENST00000638087   57890      196384.
- 8 chr2:144237655-144238696 ENSG00000169554 ZEB2      protein_coding ENST00000638087   57891      192758 
- 9 chr2:144240752-144241365 ENSG00000169554 ZEB2      protein_coding ENST00000638087   57892      189875 
-10 chr2:144267141-144267591 ENSG00000169554 ZEB2      protein_coding ENST00000638087   57893      163568.
-# ℹ 71 more rows
+ 1 chr5:150175660-150175697 ENSG00000019582 CD74      protein_coding ENST00000353334   83441      237071 
+ 2 chr5:150180579-150181363 ENSG00000019582 CD74      protein_coding ENST00000353334   83442      231778.
+ 3 chr5:150185269-150186122 ENSG00000019582 CD74      protein_coding ENST00000353334   83443      227054 
+ 4 chr5:150208861-150209820 ENSG00000019582 CD74      protein_coding ENST00000353334   83444      203409 
+ 5 chr5:150217881-150218594 ENSG00000019582 CD74      protein_coding ENST00000353334   83445      194512 
+ 6 chr5:150234576-150235054 ENSG00000019582 CD74      protein_coding ENST00000353334   83446      177934.
+ 7 chr5:150264137-150264569 ENSG00000019582 CD74      protein_coding ENST00000353334   83447      148396.
+ 8 chr5:150350443-150351368 ENSG00000019582 CD74      protein_coding ENST00000353334   83448       61844 
+ 9 chr5:150352283-150352763 ENSG00000019582 CD74      protein_coding ENST00000353334   83449       60226.
+10 chr5:150356700-150359453 ENSG00000019582 CD74      protein_coding ENST00000353334   83450       54673 
+# ℹ 33 more rows
 # ℹ Use `print(n = ...)` to see more rows
-```
 
-#### Step 3. Extract peak GRanges
-```R
-# -------------------------------
-# Get linked peaks for gene
-# -------------------------------
 linked_peaks_gene <- linked_peaks[linked_peaks$gene_name == gene_name, ]
 if(nrow(linked_peaks_gene) == 0){
   stop("No linked peaks found for gene: ", gene_name)
 }
 
 peak_ids <- linked_peaks_gene$peak_id
+head(peak_ids)
+[1] 83441 83442 83443 83444 83445 83446
 ```
 
 #### Step 4. Estimate Effective Sample Size (ESS) from Single-Cell RNA-seq Data

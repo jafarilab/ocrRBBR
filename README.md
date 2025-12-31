@@ -113,7 +113,7 @@ linked_peaks <- link_peaks_to_tss(
 ## Example using a mouse multiome dataset
 #### Step 1. Load data
 ```R
-# Load the RData file containing the ATAC-seq data, RNA-seq data, and peak locations
+# Load the ATAC-seq data, RNA-seq data, and peak locations
 data(multiome_human_mouse)
 
 # List all objects in the current R environment
@@ -121,7 +121,7 @@ ls()
 [1] "human_atacseq_data" "human_cell_type"    "human_meta_data"    "human_peaks_gr"     "human_rnaseq_data"  "mouse_atacseq_data" "mouse_peaks_gr"     "mouse_rnaseq_data" 
 
 # Inspect the GRanges object peaks_gr, which contains peak consensus scores across mammalian genomes and associated peak p-values.
-head(peaks_gr)
+head(mouse_peaks_gr)
 GRanges object with 6 ranges and 3 metadata columns:
       seqnames          ranges strand |    peakID phastCons_scores mlog10_bestPvalue
          <Rle>       <IRanges>  <Rle> | <integer>        <numeric>         <numeric>
@@ -136,23 +136,20 @@ GRanges object with 6 ranges and 3 metadata columns:
 
 # Inspect the atacseq_data matrix, where rows correspond to peaks and columns correspond to cell types.
 # The values represent quantile-normalized ATAC-seq signal intensities.
-atacseq_data[1:5, 1:5]
-  LTHSC.34-.BM LTHSC.34+.BM STHSC.150-.BM MPP4.135+.BM proB.CLP.BM
-1         0.41         0.71          0.90         0.11        1.94
-2         0.41         1.64          0.90         0.83        0.47
-3         2.36         0.10          0.90         0.11        0.47
-4         0.41         0.10          0.11         0.11        0.79
-5         0.41         0.10          0.11         0.11        0.47
+mouse_atacseq_data[1:5, 1:5]
+       LTHSC.34-.BM LTHSC.34+.BM STHSC.150-.BM MPP4.135+.BM proB.CLP.BM
+278345         4.37         2.57          0.90         4.84        3.59
+278346         0.41         0.10          0.90         0.11        3.21
+278352         0.41         0.10          1.85         0.83        1.15
+278353         2.36         0.71          1.85         0.11        2.52
+278354         0.41         1.64          0.90         0.83        0.90
 
 # Inspect the rnaseq_data matrix, where rows correspond to genes and columns correspond to cell types.
 # The values represent quantile-normalized RNA-seq signal intensities.
-rnaseq_data[1:5, 1:5]
-              LTHSC.34-.BM LTHSC.34+.BM STHSC.150-.BM MPP4.135+.BM proB.CLP.BM
-0610005C13Rik     1.096732     1.096732       1.02175     1.021812    1.205236
-0610007P14Rik   206.053987   246.105317     192.42464   204.298358  189.759175
-0610009B22Rik    78.272059    78.837030      68.84475    76.418169  106.085619
-0610009L18Rik     8.577159    16.791386      15.51155    16.947354   10.583704
-0610009O20Rik   168.645852   157.926022     155.94164   186.261464  162.584556
+mouse_rnaseq_data[ , 1:5]
+     LTHSC.34-.BM LTHSC.34+.BM STHSC.150-.BM MPP4.135+.BM proB.CLP.BM
+Rag2     1.020795      1.02126       2.98536     56.39795    483.3949
+Spi1   117.386316    199.55519     362.58834    458.98175    327.2625
 ```
 
 #### Step 2. Generate a list of peaks located within a ±100kb window around each gene.
@@ -160,9 +157,9 @@ rnaseq_data[1:5, 1:5]
 gene_name <- "Rag2"
 
 linked_peaks <- link_peaks_to_tss(
-  gtf_file = "\path_to\gencode.vM25.annotation.gtf",
-  peaks_gr = peaks_gr,
-  gene_list = gene_name, 
+  gtf_file = system.file("extdata", "gencode.vM25.annotation.sample.gtf", package = "ocrRBBR"),
+  peaks_gr = mouse_peaks_gr,
+  gene_list = gene_name,
   tss_window = 100000 # ±100kb
 )
 

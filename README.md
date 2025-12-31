@@ -421,35 +421,60 @@ head(peak_ids)
 [1] 83441 83442 83443 83444 83445 83446
 ```
 
-#### Step 4. Estimate Effective Sample Size (ESS) from Single-Cell RNA-seq Data
+#### Step 4. Estimate Effective Sample Size (ESS) from Single-Cell RNA-seq Data (Optional)
 ```R
-ess_value <- ESS(rnaseq_data = rnaseq_data, cell_data = cell_data)
+ess_value <- ESS(rnaseq_data = human_rnaseq_data, cell_type = human_cell_type)
+Processing: B intermediate
+Processing: B memory
+Processing: B naive
+Processing: CD14 Mono
+Processing: CD16 Mono
+Processing: CD4 Naive
+Processing: CD4 Proliferating
+Processing: CD4 TCM
+Processing: CD4 TEM
+Processing: CD8 Naive
+Processing: CD8 TCM
+Processing: CD8 TEM
+Processing: cDC2
+Processing: dnT
+Processing: gdT
+Processing: HSPC
+Processing: MAIT
+Processing: NK
+Processing: NK Proliferating
+Processing: NK_CD56bright
+Processing: pDC
+Processing: Plasmablast
+Processing: Treg
+
 ```
 
 #### Step 5. Train the model and output the predicted Boolean regulatory rules.
 ```R
-res <- ocrRBBR_single_cell(rnaseq_data, atacseq_data, gene_name, peak_ids, max_feature = NA, slope = 6, num_cores = NA, ESS = ess_value, meta.data)
-
-▶️ Starting processing for gene: ZEB2 ...
-✔️ All input checks passed.
+boolean_rules <- ocrRBBR_single_cell(human_rnaseq_data, human_atacseq_data, gene_name, peak_ids, max_feature = NA, slope = 6, num_cores = NA, ESS = ess_value, human_meta_data)
+Starting processing for gene: CD74 ...
+All input checks passed.
 training process started with  8  computing cores
   |====================| 100%
 
-head(res$boolean_rules_sorted)
-                                                                                                                                            Boolean_Rule                R2       BIC Input_Size
-1                          [OR(AND(57908,57940,57956),AND(~57908,57940,57956),AND(57908,~57940,57956),AND(57908,57940,~57956),AND(~57908,~57940,57956))] 0.512507251846455 -26136.99          3
-2                          [OR(AND(57940,57956,57963),AND(~57940,57956,57963),AND(57940,~57956,57963),AND(57940,57956,~57963),AND(~57940,57956,~57963))] 0.496254863988792 -25814.48          3
-3                          [OR(AND(57940,57956,57964),AND(~57940,57956,57964),AND(57940,~57956,57964),AND(57940,57956,~57964),AND(~57940,57956,~57964))] 0.495792481048702 -25805.46          3
-4                          [OR(AND(57940,57956,57961),AND(~57940,57956,57961),AND(57940,~57956,57961),AND(57940,57956,~57961),AND(~57940,57956,~57961))] 0.494215674451035 -25774.75          3
-5 [OR(AND(57921,57940,57956),AND(~57921,57940,57956),AND(57921,~57940,57956),AND(57921,57940,~57956),AND(~57921,~57940,57956),AND(~57921,57940,~57956))] 0.493175035076764 -25754.54          3
-6                          [OR(AND(57940,57950,57956),AND(~57940,57950,57956),AND(57940,~57950,57956),AND(57940,57950,~57956),AND(~57940,~57950,57956))] 0.487814267376566 -25651.07          3
-  Index          Features Active_Conjunctions                  Weights Layer1, Sub-Rule1
-1 57316 57908.57940.57956                   5 0.23:0.47:0.67:0.67:0.34:-0.13:-0.04:-1.74
-2 83267 57940.57956.57963                   5   0.2:0.64:0.65:0.49:-0.14:0.41:-0.1:-1.71
-3 83268 57940.57956.57964                   5 0.21:0.65:0.66:0.48:-0.22:0.37:-0.13:-1.62
-4 83265 57940.57956.57961                   5    0.2:0.63:0.63:0.5:-0.16:0.4:-0.08:-1.68
-5 72695 57921.57940.57956                   6      0.17:0.51:0.74:0.55:0.3:0:-0.19:-1.66
-6 83197 57940.57950.57956                   5  0.17:0.6:0.53:0.57:0.44:-0.19:-0.04:-1.67
+head(boolean_rules)
+                                                                                                               Boolean_Rule   R2    BIC                          Rule_Coefficients
+1                                                                                                                   [83456] 0.40 222.36                                 0.39:-0.38
+2                                                                                      [AND(83456,83458),AND(83456,¬83458)] 0.42 225.21                      0.55:-0.09:0.17:-0.68
+3                                                                                      [AND(83456,83460),AND(83456,¬83460)] 0.42 226.93                        0.4:-0.08:0.3:-0.68
+4                                                                                      [AND(83456,83475),AND(83456,¬83475)] 0.41 228.52                       0.3:-0.08:0.49:-0.64
+5                                                                                      [AND(83456,83482),AND(83456,¬83482)] 0.41 229.00                      0.62:-0.42:0.17:-0.36
+6 [AND(83456,83458,83460),AND(¬83456,83458,83460),AND(83456,¬83458,83460),AND(83456,83458,¬83460),AND(83456,¬83458,¬83460)] 0.43 241.97 0.43:0.38:0.26:0.55:-0.53:-0.58:0.01:-0.83
+
+# Top-ranked rules (high R², low BIC) highlight minimal yet robust combinations of OCRs that are most predictive of gene regulation.
+
+# Each row represents a Boolean rule set linking chromatin accessibility (OCRs; indexed by peak IDs) to gene expression.
+# Boolean_Rule shows the logical combinations of peaks (using AND and NOT, ¬) that best explain the gene’s expression pattern. Multiple AND clauses indicate alternative regulatory configurations that lead to similar transcriptional outcomes.
+# R² quantifies how much variance in gene expression is explained by the rule set; higher values indicate stronger explanatory power.
+# BIC (Bayesian Information Criterion) balances model fit and complexity; lower values indicate a better trade-off between accuracy and simplicity.
+# Rule_Coefficients provide the signed contribution of each Boolean rule in the fitted model. Positive coefficients indicate activating regulatory effects, while negative coefficients suggest repressive or inhibitory influences.
+
 ```
 
 

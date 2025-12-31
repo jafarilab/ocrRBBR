@@ -49,7 +49,7 @@ library(utils)
 <br>
 
 # Installation
-The ocrRBBR codes are written in R version 4.1.3 and have been tested in both Windows and Linux environments.
+The ocrRBBR codes are written in R version 4.4 and have been tested in both Windows and Linux environments.
 1. Download the compiled package file `RBBR_0.1.0.tar.gz` from this GitHub page.
 2. Install the ocrRBBR package by running the following command in R:
    
@@ -60,7 +60,7 @@ install.packages("path/to/RBBR_0.1.0.tar.gz", repos = NULL, type = "source")
 
 # Usage
 # I. Inference of OCR-Driven Boolean Rules in Bulk Multiome Datasets
-A toy dataset example is provided in example/. Please see following examples for instructions.
+A toy dataset example is provided in Data/. Please see following examples for instructions.
 
 `ocrRBBR_single_cell()` predicts Boolean rules for a given gene based on bulk-level multi-omics datasets (RNA-seq and ATAC-seq).
 ```R
@@ -91,7 +91,7 @@ Parameter Descriptions
 # peak_ids	     A vector of peak identifiers corresponding to rows in atacseq_data to be used as candidate regulatory regions for gene_name.
 #
 # Optional arguments
-# max_feature    An integer specifying the maximum number of input features allowed in a Boolean rule. The default is 3.
+# max_feature    An integer specifying the maximum number of input features allowed in a Boolean rule. Default is 3.
 # slope	         The slope parameter for the sigmoid activation function. Default is 10.
 # num_cores	     The number of parallel workers to use for computation. Adjust according to your system. Default is NA (automatic selection).
 ```

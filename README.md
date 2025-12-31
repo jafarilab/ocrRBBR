@@ -421,7 +421,7 @@ head(peak_ids)
 [1] 83441 83442 83443 83444 83445 83446
 ```
 
-#### Step 4. Estimate Effective Sample Size (ESS) from Single-Cell RNA-seq Data (Optional)
+#### Step 3. Estimate Effective Sample Size (ESS) from Single-Cell RNA-seq Data (Optional)
 ```R
 ess_value <- ESS(rnaseq_data = human_rnaseq_data, cell_type = human_cell_type)
 Processing: B intermediate
@@ -450,7 +450,7 @@ Processing: Treg
 
 ```
 
-#### Step 5. Train the model and output the predicted Boolean regulatory rules.
+#### Step 4. Train the model and output the predicted Boolean regulatory rules.
 ```R
 boolean_rules <- ocrRBBR_single_cell(human_rnaseq_data, human_atacseq_data, gene_name, peak_ids, max_feature = NA, slope = 6, num_cores = NA, ESS = ess_value, human_meta_data)
 Starting processing for gene: CD74 ...

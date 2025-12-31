@@ -27,10 +27,11 @@ Features
 
 # Dependency
 Please ensure that the required libraries from the following list are installed and loaded. 
-The glmnet package is necessary for fitting ridge regressions. To enable parallel computing in ocrRBBR, the following packages must also be installed: doParallel, foreach, and doSNOW.
+The glmnet package is necessary for fitting ridge regressions. To enable parallel computing in ocrRBBR, the following packages must also be installed: doParallel, parallel, foreach, and doSNOW.
 
 ```R
 library(doParallel)
+library(parallel)
 library(foreach)
 library(doSNOW)
 library(glmnet)
@@ -38,8 +39,11 @@ library(GenomicRanges)
 library(GenomicFeatures)
 library(rtracklayer)
 library(dplyr)
-library(ocrRBBR)
-library(readxl)
+library(Matrix)
+library(rtracklayer)
+library(S4Vectors)
+library(stats)
+library(utils)
 ```  
 
 <br>

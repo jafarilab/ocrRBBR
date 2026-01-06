@@ -1,0 +1,63 @@
+# multiome ATAC-seq and RNA-seq datasets from mouse and human
+
+Paired chromatin accessibility (ATAC-seq) and gene expression (RNA-seq)
+datasets across diverse mouse and human hematopoietic and immune cell types.
+These data enable integrative regulatory analyses linking cis-regulatory regions
+(open chromatin regions, OCRs) to gene expression variability.
+
+## Details
+
+The dataset consists of multiple objects for mouse and human:
+
+- **mouse_atacseq_data**: A numeric matrix of chromatin accessibility values for mouse.
+  - Rows correspond to ATAC-seq peaks (cis-regulatory regions) and columns correspond to 85 mouse cell types.
+  - Values represent quantile-normalized accessibility signals for each peak in each cell type.
+
+- **mouse_rnaseq_data**: A numeric matrix of gene expression values for mouse.
+  - Rows correspond to genes and columns correspond to the same set of mouse cell types as in `mouse_atacseq_data`.
+  - Values represent quantile-normalized RNA-seq expression levels.
+
+- **mouse_peaks_gr**: A `GRanges` object containing genomic coordinates and annotations for all ATAC-seq peaks in mouse, including chromosome, genomic ranges, peak identifiers, evolutionary conservation scores (phastCons), and peak significance metrics.
+
+- **human_atacseq_data**: A numeric matrix of chromatin accessibility values for human.
+  - Rows correspond to ATAC-seq peaks and columns to cell types or samples.
+  - Values are normalized by the *ReadsInTSS* metric per cell, where raw peak counts are divided by the number of Tn5 insertions in transcription start site (TSS) regions for each cell to correct for sequencing depth and accessibility differences.
+
+- **human_rnaseq_data**: A numeric matrix of gene expression values for human.
+  - Rows correspond to genes and columns to cell types or samples.
+  - Values are normalized using Seurat's `LogNormalize` method with a scale factor of 10,000: `NormalizeData(seurat_obj, normalization.method = "LogNormalize", scale.factor = 1e4)`.
+
+- **human_peaks_gr**: A `GRanges` object containing genomic coordinates and annotations for all ATAC-seq peaks in human, including chromosome, genomic ranges, and peak identifiers.
+
+- **human_cell_type**: A data frame containing cell-type information for human samples.
+  - Row names must match the column names of `human_rnaseq_data`.
+  - Must include a column named `cell_type` specifying cell types.
+
+- **human_meta_data**: A matrix that contains additional information per cell for human samples.
+  - This matrix must include the following columns:
+    - `nCount_RNA`: The total number of RNA molecules (unique molecular identifiers, UMIs) detected per cell, calculated as the sum of UMI counts across all genes.
+    - `nFeature_RNA`: The number of genes detected per cell (genes with at least one UMI).
+    - `Mitochondrial percentage`: The percentage of reads that map to mitochondrial genes, which can be used to assess the quality of the sample.
+
+## Format
+
+A list-like dataset containing:
+
+- **mouse_atacseq_data**: numeric matrix (peaks x cell types)
+- **mouse_rnaseq_data**: numeric matrix (genes x cell types)
+- **mouse_peaks_gr**: `GRanges` object with peak annotations
+- **human_atacseq_data**: numeric matrix (peaks x cells)
+- **human_rnaseq_data**: numeric matrix (genes x cells)
+- **human_peaks_gr**: `GRanges` object with peak annotations
+- **human_cell_type**: `data.frame` of human cell types with matching row names to RNA-seq data
+- **human_meta_data**: `matrix` of metadata information, including RNA counts, feature counts, and mitochondrial percentage per cell
+
+## Source
+
+- **Mouse data**: GSE100738.
+- **Human data**: Derived from published human single-cell multiome ATAC-seq and RNA-seq experiments across hematopoietic and immune cell populations.
+
+## Usage
+
+```R
+data(multiome_human_mouse)

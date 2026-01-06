@@ -1,0 +1,16 @@
+name: R-hub check
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  rhub:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: r-hub/actions/setup@v1
+
+      - uses: r-hub/actions/check@main

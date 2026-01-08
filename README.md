@@ -50,12 +50,9 @@ library(utils)
 <br>
 
 # Installation
-The ocrRBBR codes are written in R version 4.4 and have been tested in both Windows and Linux environments.
-1. Download the compiled package file `RBBR_0.1.0.tar.gz` from this GitHub page.
-2. Install the ocrRBBR package by running the following command in R:
-   
 ```R
-install.packages("path/to/RBBR_0.1.0.tar.gz", repos = NULL, type = "source")
+install.packages("devtools")
+devtools::install_github("CompBioIPM/ocrRBBR")
 ```
 <br>
 

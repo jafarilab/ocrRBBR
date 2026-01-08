@@ -21,8 +21,8 @@ Features
 # Table of Contents
 - [Installation](#Installation)
 - [Usage](#Usage)
-  - [Inference of OCR-Driven Boolean Rules in Bulk Multiome Datasets](#Usage1)
-  - [Inference of OCR-Driven Boolean Rules in single-cell Multiome Datasets](#Usage2)
+  - [I. Inference of OCR-Driven Boolean Rules in Bulk Multiome Datasets](#Usage1)
+  - [II. Inference of OCR-Driven Boolean Rules in single-cell Multiome Datasets](#Usage2)
 
 <br>
 

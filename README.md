@@ -19,33 +19,10 @@ Features
 - In ocrRBBR, samples do not need to originate from the same tissue or cell type. When samples are from the same cell type or tissue, ocrRBBR partitions them into more homogeneous groups, each associated with a distinct Boolean rule within the inferred rule set.
 
 # Table of Contents
-- [Dependency](#Dependency)
 - [Installation](#Installation)
 - [Usage](#Usage)
   - [Inference of OCR-Driven Boolean Rules in Bulk Multiome Datasets](#Usage1)
   - [Inference of OCR-Driven Boolean Rules in single-cell Multiome Datasets](#Usage2)
-
-# Dependency
-Please ensure that the required libraries from the following list are installed and loaded. 
-The glmnet package is necessary for fitting ridge regressions. To enable parallel computing in ocrRBBR, the following packages must also be installed: doParallel, parallel, foreach, and doSNOW.
-
-```R
-library(doParallel)
-library(parallel)
-library(foreach)
-library(doSNOW)
-library(glmnet)
-library(GenomicRanges)
-library(GenomicFeatures)
-library(GenomeInfoDb)
-library(rtracklayer)
-library(dplyr)
-library(Matrix)
-library(rtracklayer)
-library(S4Vectors)
-library(stats)
-library(utils)
-```  
 
 <br>
 

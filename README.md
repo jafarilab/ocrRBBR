@@ -312,7 +312,7 @@ GRanges object with 6 ranges and 1 metadata column:
   -------
   seqinfo: 33 sequences from an unspecified genome; no seqlengths
 
-# Inspect the atacseq_data matrix, where rows correspond to peaks and columns correspond to cell types.
+# Inspect the atacseq_data matrix, where rows correspond to peaks and columns correspond to cells.
 # The values represent normalized ATAC-seq counts per cell, using the ReadsInTSS method.
 human_atacseq_data[1:5, 1:5]
 5 x 5 sparse Matrix of class "dgCMatrix"
@@ -323,7 +323,7 @@ human_atacseq_data[1:5, 1:5]
 83444                  .                  .                  .                  .                  .
 83445                  .                  .                  .                  .                  .
 
-# Inspect the rnaseq_data matrix, where rows correspond to genes and columns correspond to cell types.
+# Inspect the rnaseq_data matrix, where rows correspond to genes and columns correspond to cells.
 # The values represent normalized RNA-seq signal intensities, calculated using Seurat's LogNormalize method with a scale factor of 10,000..
 human_rnaseq_data[1:5, 1:5]
 5 x 5 sparse Matrix of class "dgCMatrix"

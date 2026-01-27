@@ -55,12 +55,12 @@ Parameter Descriptions
 # Required arguments
 # rnaseq_data    A numeric matrix of RNA-seq expression values.
 #                Rows correspond to genes, columns correspond to cell types or samples.
-#                **Note:** *ocrRBBR* was tested using **quantile-normalized RNA-seq data**, but it should also work equally well on **TPM-normalized RNA-seq datasets**, provided the data is appropriately scaled across samples.
+#                **Note:** ocrRBBR was tested using **quantile-normalized RNA-seq data**, but it should also work equally well on **TPM-normalized RNA-seq datasets**, provided the data is appropriately scaled across samples.
 #
 # atacseq_data   A numeric matrix of ATAC-seq signal intensities.
 #                Rows correspond to peaks, columns correspond to cell types or samples.
 #                Column names must match those of rnaseq_data.
-#                **Note:** Similar to RNA-seq data, *ocrRBBR* is tested using **quantile-normalized ATAC-seq data** but is expected to work with other normalization methods, as long as the data distributions are comparable across samples.
+#                **Note:** Similar to RNA-seq data, ocrRBBR is tested using **quantile-normalized ATAC-seq data** but is expected to work with other normalization methods, as long as the data distributions are comparable across samples.
 #
 # gene_name	     A character string specifying the gene for which to infer Boolean rules.
 # peak_ids	     A vector of peak identifiers corresponding to rows in atacseq_data to be used as candidate regulatory regions for gene_name.

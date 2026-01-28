@@ -425,7 +425,7 @@ Processing: Treg
 
 #### Step 4. Train the model and output the predicted Boolean regulatory rules.
 ```R
-boolean_rules <- ocrRBBR_single_cell(human_rnaseq_data, human_atacseq_data, gene_name, peak_ids, max_feature = NA, slope = 6, num_cores = NA, ESS = ess_value, human_meta_data)
+boolean_rules <- ocrRBBR_single_cell(human_rnaseq_data, human_atacseq_data, gene_name, peak_ids, max_feature = NA, slope = 6, num_cores = NA, ESS = 261, human_meta_data)
 Starting processing for gene: CD74 ...
 All input checks passed.
 training process started with  8  computing cores

@@ -3,7 +3,7 @@ Predict OCR-driven Boolean rules from multi-omics datasets
 
 ocrRBBR is an R package to infer Boolean rules linking chromatin accessibility (ATAC-seq peaks) to gene expression (RNA-seq) in both bulk and single-cell multiomic datasets. The package identifies combinations of OCRs (Open Chromatin Regions) that best predict the expression state of a target gene.
 
-<img width="3810" height="3089" alt="method" src="https://github.com/user-attachments/assets/8bb0a70e-62eb-490f-a722-cc4ad6db8dc8" />
+<img width="3822" height="3094" alt="method" src="https://github.com/user-attachments/assets/735ede6e-4f6c-4512-ae98-fac26a612184" />
 
 Features
 - Supports bulk and single-cell multiome data with paired RNA-seq and ATAC-seq per cell or sample.
@@ -21,43 +21,17 @@ Features
 - In ocrRBBR, samples do not need to originate from the same tissue or cell type. When samples are from the same cell type or tissue, ocrRBBR partitions them into more homogeneous groups, each associated with a distinct Boolean rule within the inferred rule set.
 
 # Table of Contents
-- [Dependency](#Dependency)
 - [Installation](#Installation)
 - [Usage](#Usage)
-  - [Inference of OCR-Driven Boolean Rules in Bulk Multiome Datasets](#Usage1)
-  - [Inference of OCR-Driven Boolean Rules in single-cell Multiome Datasets](#Usage2)
-
-# Dependency
-Please ensure that the required libraries from the following list are installed and loaded. 
-The glmnet package is necessary for fitting ridge regressions. To enable parallel computing in ocrRBBR, the following packages must also be installed: doParallel, parallel, foreach, and doSNOW.
-
-```R
-library(doParallel)
-library(parallel)
-library(foreach)
-library(doSNOW)
-library(glmnet)
-library(GenomicRanges)
-library(GenomicFeatures)
-library(GenomeInfoDb)
-library(rtracklayer)
-library(dplyr)
-library(Matrix)
-library(rtracklayer)
-library(S4Vectors)
-library(stats)
-library(utils)
-```  
+  - [I. Inference of OCR-Driven Boolean Rules in Bulk Multiome Datasets](#Usage1)
+  - [II. Inference of OCR-Driven Boolean Rules in single-cell Multiome Datasets](#Usage2)
 
 <br>
 
 # Installation
-The ocrRBBR codes are written in R version 4.4 and have been tested in both Windows and Linux environments.
-1. Download the compiled package file `RBBR_0.1.0.tar.gz` from this GitHub page.
-2. Install the ocrRBBR package by running the following command in R:
-   
 ```R
-install.packages("path/to/RBBR_0.1.0.tar.gz", repos = NULL, type = "source")
+install.packages("devtools")
+devtools::install_github("CompBioIPM/ocrRBBR")
 ```
 <br>
 
@@ -83,12 +57,12 @@ Parameter Descriptions
 # Required arguments
 # rnaseq_data    A numeric matrix of RNA-seq expression values.
 #                Rows correspond to genes, columns correspond to cell types or samples.
-#                **Note:** *ocrRBBR* was tested using **quantile-normalized RNA-seq data**, but it should also work equally well on **TPM-normalized RNA-seq datasets**, provided the data is appropriately scaled across samples.
+#                **Note:** ocrRBBR was tested using **quantile-normalized RNA-seq data**, but it should also work equally well on **TPM-normalized RNA-seq datasets**, provided the data is appropriately scaled across samples.
 #
 # atacseq_data   A numeric matrix of ATAC-seq signal intensities.
 #                Rows correspond to peaks, columns correspond to cell types or samples.
 #                Column names must match those of rnaseq_data.
-#                **Note:** Similar to RNA-seq data, *ocrRBBR* is tested using **quantile-normalized ATAC-seq data** but is expected to work with other normalization methods, as long as the data distributions are comparable across samples.
+#                **Note:** Similar to RNA-seq data, ocrRBBR is tested using **quantile-normalized ATAC-seq data** but is expected to work with other normalization methods, as long as the data distributions are comparable across samples.
 #
 # gene_name	     A character string specifying the gene for which to infer Boolean rules.
 # peak_ids	     A vector of peak identifiers corresponding to rows in atacseq_data to be used as candidate regulatory regions for gene_name.
@@ -340,7 +314,7 @@ GRanges object with 6 ranges and 1 metadata column:
   -------
   seqinfo: 33 sequences from an unspecified genome; no seqlengths
 
-# Inspect the atacseq_data matrix, where rows correspond to peaks and columns correspond to cell types.
+# Inspect the atacseq_data matrix, where rows correspond to peaks and columns correspond to cells.
 # The values represent normalized ATAC-seq counts per cell, using the ReadsInTSS method.
 human_atacseq_data[1:5, 1:5]
 5 x 5 sparse Matrix of class "dgCMatrix"
@@ -351,7 +325,7 @@ human_atacseq_data[1:5, 1:5]
 83444                  .                  .                  .                  .                  .
 83445                  .                  .                  .                  .                  .
 
-# Inspect the rnaseq_data matrix, where rows correspond to genes and columns correspond to cell types.
+# Inspect the rnaseq_data matrix, where rows correspond to genes and columns correspond to cells.
 # The values represent normalized RNA-seq signal intensities, calculated using Seurat's LogNormalize method with a scale factor of 10,000..
 human_rnaseq_data[1:5, 1:5]
 5 x 5 sparse Matrix of class "dgCMatrix"
@@ -453,7 +427,7 @@ Processing: Treg
 
 #### Step 4. Train the model and output the predicted Boolean regulatory rules.
 ```R
-boolean_rules <- ocrRBBR_single_cell(human_rnaseq_data, human_atacseq_data, gene_name, peak_ids, max_feature = NA, slope = 6, num_cores = NA, ESS = ess_value, human_meta_data)
+boolean_rules <- ocrRBBR_single_cell(human_rnaseq_data, human_atacseq_data, gene_name, peak_ids, max_feature = NA, slope = 6, num_cores = NA, ESS = 261, human_meta_data)
 Starting processing for gene: CD74 ...
 All input checks passed.
 training process started with  8  computing cores

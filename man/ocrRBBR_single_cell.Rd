@@ -13,7 +13,8 @@ ocrRBBR_single_cell(
   slope = NA,
   num_cores = NA,
   ESS = NA,
-  meta_data
+  meta_data,
+  verbose = FALSE
 )
 }
 \arguments{
@@ -24,12 +25,12 @@ correspond to cells or samples. RNA-seq values are assumed to be normalized usin
 
 \item{atacseq_data}{A numeric matrix of ATAC-seq signal intensities. Rows correspond to peaks,
   columns correspond to cells or samples. ATAC-seq counts are assumed to be normalized
-  by the \emph{ReadsInTSS} metric on a per-cell basis, where raw peak counts are divided by
+  by the \code{ReadsInTSS} metric on a per-cell basis, where raw peak counts are divided by
   the number of Tn5 insertions falling within transcription start site (TSS) regions for each cell.
   This normalization corrects for differences in sequencing depth and chromatin accessibility
   signal across cells.
 
-  ReadsInTSS values are typically obtained from ArchR and applied as column-wise scaling
+  \code{ReadsInTSS} values are typically obtained from \code{ArchR} and applied as column-wise scaling
   factors to the ATAC-seq count matrix prior to downstream analysis.}
 
 \item{gene_name}{A character string specifying the gene for which to infer Boolean rules.}
@@ -44,12 +45,18 @@ correspond to cells or samples. RNA-seq values are assumed to be normalized usin
 
 \item{ESS}{Effective sample size of the single-cell data after accounting for noise and cell-to-cell correlation.}
 
-\item{meta_data}{A matrix that contains additional information per cell, such as:
-- **nCount_RNA**: The total number of RNA molecules (unique molecular identifiers, UMIs) detected per cell, calculated as the sum of UMI counts across all genes.
-- **nFeature_RNA**: The number of genes detected per cell (genes with at least one UMI).
-- **Mitochondrial percentage**: The percentage of reads that map to mitochondrial genes, which can be used to assess the quality of the sample.
+\item{meta_data}{A numeric matrix or data.frame containing additional
+  per-cell covariates (rows = cells, columns = covariates), such as:
 
-This information is typically stored as columns in the `meta_data` object, which is associated with each cell in the dataset.}
+**nCount_RNA**: The total number of RNA molecules (unique molecular identifiers, UMIs) detected per cell, calculated as the sum of UMI counts across all genes.
+
+**nFeature_RNA**: The number of genes detected per cell (genes with at least one UMI).
+
+**Mitochondrial percentage**: The percentage of reads that map to mitochondrial genes, which can be used to assess the quality of the sample.
+
+This information is typically stored as columns in the \code{meta_data} object, which is associated with each cell in the dataset.}
+
+\item{verbose}{Logical. If TRUE, progress messages and a progress bar are shown. Default is FALSE.}
 }
 \value{
 A list containing predicted Boolean rules and associated metrics for the input gene.
@@ -61,20 +68,13 @@ across samples.
 }
 \examples{
 # Load single-cell human dataset
-data(multiome_human_mouse)  # loads atacseq_data, rnaseq_data, peaks_gr, cell_type, meta_data
-
-# Inspect loaded data
-head(human_atacseq_data)
-head(human_rnaseq_data)
-head(human_peaks_gr)
-head(human_meta_data)
+data(multiome_human_mouse)  # loads atacseq_data, rnaseq_data, peaks_gr, meta_data
 
 # Example usage:
-peak_ids <- c(83456, 83458, 83460, 83475, 83482)
+peak_ids <- c(83456, 83458, 83460)
 
 boolean_rules <- ocrRBBR_single_cell(human_rnaseq_data, human_atacseq_data,
        "CD74", peak_ids = peak_ids, max_feature = 3, slope = 6,
         num_cores = 1, ESS = 261, meta_data = human_meta_data)
 
-print(boolean_rules)
 }

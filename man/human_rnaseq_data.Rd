@@ -5,7 +5,7 @@
 \alias{human_rnaseq_data}
 \title{Human RNA-seq data}
 \format{
-An object of class \code{dgCMatrix} with 36601 rows and 9834 columns.
+An object of class \code{dgCMatrix} with 2 rows and 9834 columns.
 }
 \usage{
 human_rnaseq_data

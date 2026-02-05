@@ -2,18 +2,20 @@
 % Please edit documentation in R/ESS.R
 \name{ESS}
 \alias{ESS}
-\title{Estimate Effective Sample Size (ESS) from Single-Cell RNA-seq Data}
+\title{Estimate Effective Sample Size from Single-Cell RNA-seq Data}
 \usage{
-ESS(rnaseq_data, cell_type)
+ESS(rnaseq_data, cell_type, verbose = FALSE)
 }
 \arguments{
 \item{rnaseq_data}{A numeric matrix of RNA-seq expression values.
 Rows correspond to genes and columns correspond to cells.
-Expression values are assumed to be normalized (e.g., Seurat LogNormalize with scale.factor = 1e4).}
+Expression values are assumed to be normalized (e.g., \code{Seurat LogNormalize} with \code{scale.factor = 1e4}).}
 
 \item{cell_type}{A data frame containing cell-type information.
-Row names must match the column names of `rnaseq_data`.
-Must include a column named `cell_type` specifying cell types.}
+Row names must match the column names of \code{rnaseq_data}.
+Must include a column named \code{cell_type} specifying cell types.}
+
+\item{verbose}{Logical. If TRUE, progress messages are printed.}
 }
 \value{
 A numeric value representing the effective sample size (ESS),
@@ -22,17 +24,4 @@ A numeric value representing the effective sample size (ESS),
 \description{
 This function estimates the effective sample size (ESS) of single-cell RNA-seq data
 by accounting for correlation among cells within the same cell type.
-}
-\examples{
-\donttest{
-# Load single-cell human dataset
-data(multiome_human_mouse)  # loads atacseq_data, rnaseq_data, peaks_gr, cell_type, meta.data
-
-# Inspect loaded data
-head(human_rnaseq_data)
-head(human_cell_type)
-
-ess <- ESS(rnaseq_data = human_rnaseq_data, cell_type = human_cell_type)
-print(ess)
-}
 }

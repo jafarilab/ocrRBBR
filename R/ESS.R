@@ -1,37 +1,29 @@
-#' @title Estimate Effective Sample Size (ESS) from Single-Cell RNA-seq Data
+#' @title Estimate Effective Sample Size from Single-Cell RNA-seq Data
 #'
 #' @description This function estimates the effective sample size (ESS) of single-cell RNA-seq data
 #' by accounting for correlation among cells within the same cell type.
 #'
 #' @param rnaseq_data A numeric matrix of RNA-seq expression values.
 #'   Rows correspond to genes and columns correspond to cells.
-#'   Expression values are assumed to be normalized (e.g., Seurat LogNormalize with scale.factor = 1e4).
+#'   Expression values are assumed to be normalized (e.g., \code{Seurat LogNormalize} with \code{scale.factor = 1e4}).
 #'
 #' @param cell_type A data frame containing cell-type information.
-#'   Row names must match the column names of `rnaseq_data`.
-#'   Must include a column named `cell_type` specifying cell types.
+#'   Row names must match the column names of \code{rnaseq_data}.
+#'   Must include a column named \code{cell_type} specifying cell types.
+#'
+#' @param verbose Logical. If TRUE, progress messages are printed.
 #'
 #' @return A numeric value representing the effective sample size (ESS),
 #'   adjusted for within-cell-type correlation.
 #'
-#' @examples
-#' \donttest{
-#' # Load single-cell human dataset
-#' data(multiome_human_mouse)  # loads atacseq_data, rnaseq_data, peaks_gr, cell_type, meta.data
-#'
-#' # Inspect loaded data
-#' head(human_rnaseq_data)
-#' head(human_cell_type)
-#'
-#' ess <- ESS(rnaseq_data = human_rnaseq_data, cell_type = human_cell_type)
-#' print(ess)
-#' }
 #' @export
-ESS <- function(rnaseq_data, cell_type) {
+#'
+#' @importFrom Matrix t
+ESS <- function(rnaseq_data, cell_type, verbose = FALSE) {
 
   # Cell name consistency ----
   if (!identical(colnames(rnaseq_data), rownames(cell_type))) {
-    stop("ERROR: Column names of rnaseq_data must match row names of cell_type.")
+    stop("Column names of rnaseq_data must match row names of cell_type.")
   }
 
   # Annotate cell types ----
@@ -44,7 +36,7 @@ ESS <- function(rnaseq_data, cell_type) {
 
   # Loop over cell types ----
   for (ct in cell_types) {
-    message("Processing: ", ct)
+    if (verbose) message("Processing: ", ct)
 
     cells_ct <- which(cell_type == ct)
 
@@ -75,10 +67,17 @@ ESS <- function(rnaseq_data, cell_type) {
     expr_ct_dense <- as.matrix(Matrix::t(expr_ct))  # cells as rows
 
     # # Compute correlation with suppressed warnings
-    cor_ct <- tryCatch(
-      suppressWarnings(cor(expr_ct_dense, use = "pairwise.complete.obs")),
-      warning = function(w) NULL  # suppress the warning
+    cor_ct <- suppressWarnings(
+      tryCatch(
+        cor(expr_ct_dense, use = "pairwise.complete.obs"),
+        error = function(e) NULL
+      )
     )
+
+    if (is.null(cor_ct)) {
+      rho_per_type[ct] <- NA
+      next
+    }
 
     # ---- Step 6: Compute correlation ----
     # cor_ct <- cor(expr_ct_dense, use = "pairwise.complete.obs")

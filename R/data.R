@@ -16,8 +16,5 @@
 #' Mouse peaks GRanges
 "mouse_peaks_gr"
 
-#' Human cell type information
-"human_cell_type"
-
 #' Human metadata
 "human_meta_data"

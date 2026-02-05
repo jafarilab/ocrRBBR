@@ -10,12 +10,12 @@
 #'   \code{NormalizeData(seurat_obj, normalization.method = "LogNormalize", scale.factor = 1e4)}.
 #' @param atacseq_data A numeric matrix of ATAC-seq signal intensities. Rows correspond to peaks,
 #'   columns correspond to cells or samples. ATAC-seq counts are assumed to be normalized
-#'   by the \emph{ReadsInTSS} metric on a per-cell basis, where raw peak counts are divided by
+#'   by the \code{ReadsInTSS} metric on a per-cell basis, where raw peak counts are divided by
 #'   the number of Tn5 insertions falling within transcription start site (TSS) regions for each cell.
 #'   This normalization corrects for differences in sequencing depth and chromatin accessibility
 #'   signal across cells.
 #'
-#'   ReadsInTSS values are typically obtained from ArchR and applied as column-wise scaling
+#'   \code{ReadsInTSS} values are typically obtained from \code{ArchR} and applied as column-wise scaling
 #'   factors to the ATAC-seq count matrix prior to downstream analysis.
 #'
 #' @param gene_name A character string specifying the gene for which to infer Boolean rules.
@@ -24,40 +24,38 @@
 #' @param slope The slope parameter for the sigmoid activation function. Default is 10.
 #' @param num_cores Number of parallel workers to use for computation. Adjust according to your system. Default is NA.
 #' @param ESS Effective sample size of the single-cell data after accounting for noise and cell-to-cell correlation.
-#' @param meta_data A matrix that contains additional information per cell, such as:
-#' - **nCount_RNA**: The total number of RNA molecules (unique molecular identifiers, UMIs) detected per cell, calculated as the sum of UMI counts across all genes.
-#' - **nFeature_RNA**: The number of genes detected per cell (genes with at least one UMI).
-#' - **Mitochondrial percentage**: The percentage of reads that map to mitochondrial genes, which can be used to assess the quality of the sample.
+#' @param meta_data A numeric matrix or data.frame containing additional
+#'   per-cell covariates (rows = cells, columns = covariates), such as:
 #'
-#' This information is typically stored as columns in the `meta_data` object, which is associated with each cell in the dataset.
+#' **nCount_RNA**: The total number of RNA molecules (unique molecular identifiers, UMIs) detected per cell, calculated as the sum of UMI counts across all genes.
 #'
+#' **nFeature_RNA**: The number of genes detected per cell (genes with at least one UMI).
+#'
+#' **Mitochondrial percentage**: The percentage of reads that map to mitochondrial genes, which can be used to assess the quality of the sample.
+#'
+#' This information is typically stored as columns in the \code{meta_data} object, which is associated with each cell in the dataset.
+#'
+#' @param verbose Logical. If TRUE, progress messages and a progress bar are shown. Default is FALSE.
 #' @return A list containing predicted Boolean rules and associated metrics for the input gene.
 #'
 #' @examples
 #' # Load single-cell human dataset
-#' data(multiome_human_mouse)  # loads atacseq_data, rnaseq_data, peaks_gr, cell_type, meta_data
-#'
-#' # Inspect loaded data
-#' head(human_atacseq_data)
-#' head(human_rnaseq_data)
-#' head(human_peaks_gr)
-#' head(human_meta_data)
+#' data(multiome_human_mouse)  # loads atacseq_data, rnaseq_data, peaks_gr, meta_data
 #'
 #' # Example usage:
-#' peak_ids <- c(83456, 83458, 83460, 83475, 83482)
+#' peak_ids <- c(83456, 83458, 83460)
 #'
 #' boolean_rules <- ocrRBBR_single_cell(human_rnaseq_data, human_atacseq_data,
 #'        "CD74", peak_ids = peak_ids, max_feature = 3, slope = 6,
 #'         num_cores = 1, ESS = 261, meta_data = human_meta_data)
 #'
-#' print(boolean_rules)
 #' @export
-ocrRBBR_single_cell <- function(rnaseq_data, atacseq_data, gene_name, peak_ids, max_feature = NA, slope = NA, num_cores = NA, ESS = NA, meta_data){
-  message("Starting processing for gene: ", gene_name, " ...")
+ocrRBBR_single_cell <- function(rnaseq_data, atacseq_data, gene_name, peak_ids, max_feature = NA, slope = NA, num_cores = NA, ESS = NA, meta_data, verbose = FALSE){
+  if (verbose) message("Starting processing for gene: ", gene_name, " ...")
 
   ## ---- Check 1: gene_name exists in rnaseq_data ----
   if (!(gene_name %in% rownames(rnaseq_data))) {
-    stop("ERROR: gene_name '", gene_name,
+    stop("gene_name '", gene_name,
          "' does not exist in rownames(rnaseq_data).")
   }
 
@@ -66,12 +64,12 @@ ocrRBBR_single_cell <- function(rnaseq_data, atacseq_data, gene_name, peak_ids, 
   missing_peaks <- peak_ids[!peak_ids %in% rownames(atacseq_data)]
 
   if (length(missing_peaks) == length(peak_ids)) {
-    stop("ERROR: None of the provided peak_ids exist in atacseq_data.")
+    stop("None of the provided peak_ids exist in atacseq_data.")
   }
 
   # If there are any missing peaks, show a warning message
   if (length(missing_peaks) > 0) {
-    warning("WARNING: The following peak_ids do not exist in atacseq_data: ",
+    warning("The following peak_ids do not exist in atacseq_data: ",
             paste(missing_peaks, collapse = ", "))
   }
 
@@ -80,18 +78,18 @@ ocrRBBR_single_cell <- function(rnaseq_data, atacseq_data, gene_name, peak_ids, 
 
   ## ---- Check 3: Column names match between RNA-seq & ATAC-seq ----
   if (!identical(colnames(rnaseq_data), colnames(atacseq_data))) {
-    stop("ERROR: Column names of rnaseq_data and atacseq_data do NOT match.\n",
+    stop("Column names of rnaseq_data and atacseq_data do not match.",
          "This indicates differences in cell identities or ordering.")
   }
 
   ## ---- Check 4: cell names match between RNA-seq & meta_data ----
   if (!identical(colnames(rnaseq_data), rownames(meta_data))) {
-    stop("ERROR: Column names of rnaseq_data and meta_data do NOT match.\n",
+    stop("Column names of rnaseq_data and meta_data do not match.",
          "This indicates differences in cell identities or ordering between RNA-seq data and metadata.")
   }
 
   ## If all checks passed:
-  message("All input checks passed.")
+  if (verbose) message("All input checks passed.")
   # -------------------------------
   # 1. Prepare RNA data (log10 -> scaled)
   # -------------------------------
@@ -115,7 +113,7 @@ ocrRBBR_single_cell <- function(rnaseq_data, atacseq_data, gene_name, peak_ids, 
 
   # If no rows remain, stop the analysis
   if (nrow(atacseq_mat) == 0) {
-    stop("ERROR: All selected peaks have zero variance. Cannot proceed with analysis.")
+    stop("All selected peaks have zero variance. Cannot proceed with analysis.")
   }
 
   atacseq_mat <- Matrix::t(atacseq_mat)
@@ -160,10 +158,13 @@ ocrRBBR_single_cell <- function(rnaseq_data, atacseq_data, gene_name, peak_ids, 
   if (is.na(ESS)){
     ESS <- nrow(data)
   }
-  cat("training process started with ", num_cores, " computing cores\n")
+  if (verbose) message("training process started with ", num_cores, " computing cores")
 
   progress_percent <- 0
-  pb <- txtProgressBar(min = 0, max = 100, style = 3, width = 20)
+  if (verbose) {
+    pb <- utils::txtProgressBar(min = 0, max = 100, style = 3, width = 20)
+  }
+
   sigmoid <- function(x) {
     1/(1 + exp(-slope * (x - 0.5)))
   }
@@ -242,7 +243,7 @@ ocrRBBR_single_cell <- function(rnaseq_data, atacseq_data, gene_name, peak_ids, 
         list(AGRE_OUT = c(ORD, coef(best_model)[1:length(coef(best_model))], rsq, rsq_adj, BIC), AGRE_OUT_pred = c(), R2 = rsq_adj)
       }
     progress_percent <- round(100 * current_it/total_iterations, 2)
-    utils::setTxtProgressBar(pb, progress_percent)
+    if (verbose) utils::setTxtProgressBar(pb, progress_percent)
     LOGIC_VALUES[[as.character(k)]] <- results
   }
   W2SYMBOL_ORIGINAL <- function(logic_significance, predicted_impact_set) {
@@ -341,6 +342,6 @@ ocrRBBR_single_cell <- function(rnaseq_data, atacseq_data, gene_name, peak_ids, 
   rownames(boolean_rules) <- NULL
   parallel::stopCluster(cl)
   foreach::registerDoSEQ()
-  close(pb)
+  if (verbose) close(pb)
   return(boolean_rules)
 }

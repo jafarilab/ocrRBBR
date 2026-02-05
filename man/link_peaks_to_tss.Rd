@@ -2,7 +2,7 @@
 % Please edit documentation in R/link_peaks_to_tss.R
 \name{link_peaks_to_tss}
 \alias{link_peaks_to_tss}
-\title{Identifies ATAC-seq peaks that fall within a user-defined genomic window surrounding each gene.}
+\title{Identifies ATAC-seq peaks surrounding each gene}
 \usage{
 link_peaks_to_tss(gtf_file, peaks_gr, gene_list = NA, tss_window = NA)
 }
@@ -11,7 +11,7 @@ link_peaks_to_tss(gtf_file, peaks_gr, gene_list = NA, tss_window = NA)
 
 \item{peaks_gr}{A \code{GRanges} object representing the ATAC-seq peaks with their genomic locations and associated metadata.}
 
-\item{gene_list}{A character vector of gene names to filter for. Only peaks within the window around TSS of these genes will be considered. Default is \code{NA}, in which case all genes in the GTF will be used.}
+\item{gene_list}{A character vector of gene names to filter for. Only peaks within the window around TSS of these genes will be considered. Default is \code{NA}, in which case all genes in the GTF file will be used.}
 
 \item{tss_window}{An integer specifying the window size around the TSS. Default is \code{100000} (±100kb).}
 }
@@ -30,14 +30,9 @@ This function identifies ATAC-seq peaks that are located within a specified wind
 the transcription start sites (TSS) of genes, and links those peaks to the respective genes.
 }
 \examples{
+\donttest{
 # Load bulk mouse dataset
 data(multiome_human_mouse)  # This will load atacseq_data, rnaseq_data, peaks_gr
-
-# Inspect loaded data
-head(mouse_atacseq_data)
-head(mouse_rnaseq_data)
-head(mouse_peaks_gr)
-
 
 # Path to the GTF file in the package
 gtf_file <- system.file("extdata", "gencode.vM25.annotation.sample.gtf", package = "ocrRBBR")
@@ -46,12 +41,11 @@ gtf_file <- system.file("extdata", "gencode.vM25.annotation.sample.gtf", package
 linked_peaks <- link_peaks_to_tss(
   gtf_file = gtf_file,
   peaks_gr = mouse_peaks_gr,
-  gene_list = c("Rag2", "Spi1"),
+  gene_list = c("Rag2"),
   tss_window = 100000
 )
 
 # Filter results for a specific gene
 linked_peaks_gene <- linked_peaks[linked_peaks$gene_name == "Rag2", ]
-print(linked_peaks_gene)
-
+}
 }

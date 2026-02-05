@@ -5,15 +5,16 @@
 #' across samples.
 #'
 #' @param rnaseq_data A numeric matrix of RNA-seq expression values. Rows correspond to genes, columns correspond to cell types or samples.
-#' **Note:** *ocrRBBR* was tested using **quantile-normalized RNA-seq data**, but it should also work equally well on **TPM-normalized RNA-seq datasets**, provided the data is appropriately scaled across samples.
+#' **Note:** \code{ocrRBBR} was tested using **quantile-normalized RNA-seq data**, but it should also work equally well on **TPM-normalized RNA-seq datasets**, provided the data is appropriately scaled across samples.
 #'
-#' @param atacseq_data A numeric matrix of ATAC-seq signal intensities. Rows correspond to peaks, columns correspond to cell types or samples. Column names must match those of rnaseq_data.
-#' **Note:** Similar to RNA-seq data, *ocrRBBR* is tested using **quantile-normalized ATAC-seq data** but is expected to work with other normalization methods, as long as the data distributions are comparable across samples.
+#' @param atacseq_data A numeric matrix of ATAC-seq signal intensities. Rows correspond to peaks, columns correspond to cell types or samples. Column names must match those of \code{rnaseq_data}.
+#' **Note:** Similar to RNA-seq data, \code{ocrRBBR} is tested using **quantile-normalized ATAC-seq data** but is expected to work with other normalization methods, as long as the data distributions are comparable across samples.
 #' @param gene_name A character string specifying the gene for which to infer Boolean rules.
-#' @param peak_ids A vector of peak identifiers corresponding to rows in atacseq_data to be used as candidate regulatory regions for gene_name.
+#' @param peak_ids A vector of peak identifiers corresponding to rows in \code{atacseq_data} to be used as candidate regulatory regions for \code{gene_name}.
 #' @param max_feature An integer specifying the maximum number of input features allowed in a Boolean rule. Default is 3.
 #' @param slope The slope parameter for the sigmoid activation function. Default is 10.
 #' @param num_cores Number of parallel workers to use for computation. Adjust according to your system. Default is NA (automatic selection).
+#' @param verbose Logical. If TRUE, progress messages and a progress bar are shown. Default is FALSE.
 #'
 #' @return A list containing predicted Boolean rules and associated metrics for the input gene.
 #'
@@ -21,18 +22,12 @@
 #' # Load bulk mouse dataset
 #' data(multiome_human_mouse)  # loads atacseq_data, rnaseq_data, peaks_gr
 #'
-#' # Inspect loaded data
-#' head(mouse_atacseq_data)
-#' head(mouse_rnaseq_data)
-#' head(mouse_peaks_gr)
-#'
 #' # Example usage:
-#' peak_ids <- c(278352, 278355, 278362, 278381, 278384, 278386, 278390, 278398)
+#' peak_ids <- c(278352, 278362, 278381, 278384)
 #'
 #' boolean_rules <- ocrRBBR_bulk(mouse_rnaseq_data, mouse_atacseq_data, "Rag2",
 #'     peak_ids = peak_ids, max_feature = 3, slope = 10, num_cores = 1)
 #'
-#' print(boolean_rules)
 #' @export
 #'
 #' @importFrom foreach foreach %dopar%
@@ -40,12 +35,12 @@
 #' @importFrom parallel makeCluster stopCluster detectCores
 #' @importFrom stats cor predict quantile sd var
 #' @importFrom utils combn txtProgressBar
-ocrRBBR_bulk <- function(rnaseq_data, atacseq_data, gene_name, peak_ids, max_feature = NA, slope = NA, num_cores = NA){
-  message("Starting processing for gene: ", gene_name, " ...")
+ocrRBBR_bulk <- function(rnaseq_data, atacseq_data, gene_name, peak_ids, max_feature = NA, slope = NA, num_cores = NA, verbose = FALSE){
+  if (verbose) message("Starting processing for gene: ", gene_name, " ...")
 
   ## ---- Check 1: gene_name exists in rnaseq_data ----
   if (!(gene_name %in% rownames(rnaseq_data))) {
-    stop("ERROR: gene_name '", gene_name,
+    stop("gene_name '", gene_name,
          "' does not exist in rownames(rnaseq_data).")
   }
   ## ---- Check 2: peak_ids exist in atacseq_data ----
@@ -53,12 +48,12 @@ ocrRBBR_bulk <- function(rnaseq_data, atacseq_data, gene_name, peak_ids, max_fea
   missing_peaks <- peak_ids[!peak_ids %in% rownames(atacseq_data)]
 
   if (length(missing_peaks) == length(peak_ids)) {
-    stop("ERROR: None of the provided peak_ids exist in atacseq_data.")
+    stop("None of the provided peak_ids exist in atacseq_data.")
   }
 
   # If there are any missing peaks, show a warning message
   if (length(missing_peaks) > 0) {
-    warning("WARNING: The following peak_ids do not exist in atacseq_data: ",
+    warning("The following peak_ids do not exist in atacseq_data: ",
             paste(missing_peaks, collapse = ", "))
   }
 
@@ -67,12 +62,12 @@ ocrRBBR_bulk <- function(rnaseq_data, atacseq_data, gene_name, peak_ids, max_fea
 
   ## ---- Check 3: Column names match between RNA-seq & ATAC-seq ----
   if (!identical(colnames(rnaseq_data), colnames(atacseq_data))) {
-    stop("ERROR: Column names of rnaseq_data and atacseq_data do NOT match.\n",
+    stop("Column names of rnaseq_data and atacseq_data do not match. ",
          "This indicates differences in cell identities or ordering.")
   }
 
   ## If all checks passed:
-  message("All input checks passed.")
+  if (verbose) message("All input checks passed.")
   # -------------------------------
   # 1. Prepare RNA data (log10 -> scaled)
   # -------------------------------
@@ -97,7 +92,7 @@ ocrRBBR_bulk <- function(rnaseq_data, atacseq_data, gene_name, peak_ids, max_fea
 
   # If no rows remain, stop the analysis
   if (nrow(atacseq_mat) == 0) {
-    stop("ERROR: All selected peaks have zero variance. Cannot proceed with analysis.")
+    stop("All selected peaks have zero variance. Cannot proceed with analysis.")
   }
 
   atacseq_mat <- Matrix::t(atacseq_mat)
@@ -133,11 +128,14 @@ ocrRBBR_bulk <- function(rnaseq_data, atacseq_data, gene_name, peak_ids, max_fea
   if (is.na(num_cores)) {
     num_cores <- parallel::detectCores()
   }
-  cat("training process started with ", num_cores, " computing cores\n")
+  if (verbose) message("training process started with ", num_cores, " computing cores")
 
   progress_percent <- 0
 
-  pb <- txtProgressBar(min = 0, max = 100, style = 3, width = 20)
+  if (verbose) {
+    pb <- utils::txtProgressBar(min = 0, max = 100, style = 3, width = 20)
+  }
+
   sigmoid <- function(x) {
     1/(1 + exp(-slope * (x - 0.5)))
   }
@@ -215,7 +213,7 @@ ocrRBBR_bulk <- function(rnaseq_data, atacseq_data, gene_name, peak_ids, max_fea
         list(AGRE_OUT = c(ORD, coef(best_model)[1:length(coef(best_model))], rsq, rsq_adj, BIC), AGRE_OUT_pred = c(), R2 = rsq_adj)
       }
     progress_percent <- round(100 * current_it/total_iterations, 2)
-    utils::setTxtProgressBar(pb, progress_percent)
+    if (verbose) utils::setTxtProgressBar(pb, progress_percent)
     LOGIC_VALUES[[as.character(k)]] <- results
   }
   W2SYMBOL_ORIGINAL <- function(logic_significance, predicted_impact_set) {
@@ -314,6 +312,6 @@ ocrRBBR_bulk <- function(rnaseq_data, atacseq_data, gene_name, peak_ids, max_fea
   rownames(boolean_rules) <- NULL
   parallel::stopCluster(cl)
   foreach::registerDoSEQ()
-  close(pb)
+  if (verbose) close(pb)
   return(boolean_rules)
 }

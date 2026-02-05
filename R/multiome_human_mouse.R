@@ -32,7 +32,7 @@
 #'
 #'   \item{\code{human_atacseq_data}}{
 #'     A numeric matrix of chromatin accessibility values for human.
-#'     Rows correspond to ATAC-seq peaks and columns to cell types or samples.
+#'     Rows correspond to ATAC-seq peaks and columns to cells or samples.
 #'     Values are normalized by the \emph{ReadsInTSS} metric per cell, where raw peak counts
 #'     are divided by the number of Tn5 insertions in transcription start site (TSS) regions
 #'     for each cell to correct for sequencing depth and accessibility differences.
@@ -40,7 +40,7 @@
 #'
 #'   \item{\code{human_rnaseq_data}}{
 #'     A numeric matrix of gene expression values for human.
-#'     Rows correspond to genes and columns to cell types or samples.
+#'     Rows correspond to genes and columns to cells or samples.
 #'     Values are normalized using Seurat's \code{LogNormalize} method with a scale factor of 10,000:
 #'     \code{NormalizeData(seurat_obj, normalization.method = "LogNormalize", scale.factor = 1e4)}.
 #'   }
@@ -49,12 +49,6 @@
 #'     A \code{\link[GenomicRanges]{GRanges}} object containing genomic
 #'     coordinates and annotations for all ATAC-seq peaks in human, including chromosome,
 #'     genomic ranges, and peak identifiers.
-#'   }
-#'
-#'   \item{\code{human_cell_type}}{
-#'     A data frame containing cell-type information for human samples.
-#'     Row names must match the column names of \code{human_rnaseq_data}.
-#'     Must include a column named \code{cell_type} specifying cell types.
 #'   }
 #'   
 #'   \item{\code{human_meta_data}}{
@@ -77,7 +71,6 @@
 #'   \item{\code{human_atacseq_data}}{numeric matrix (peaks x cells)}
 #'   \item{\code{human_rnaseq_data}}{numeric matrix (genes x cells)}
 #'   \item{\code{human_peaks_gr}}{\code{GRanges} object with peak annotations}
-#'   \item{\code{human_cell_type}}{\code{data.frame} of human cell types with matching row names to RNA-seq data}
 #'   \item{\code{human_meta_data}}{\code{matrix} of metadata information, including RNA counts, feature counts, and mitochondrial percentage per cell}
 #' }
 #'
@@ -109,9 +102,6 @@
 #'
 #' # Human genomic coordinates of peaks
 #' human_peaks_gr
-#'
-#' # Inspect human cell type information
-#' head(human_cell_type)
 #'
 #' # Inspect human metadata
 #' head(human_meta_data)

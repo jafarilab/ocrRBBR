@@ -1,14 +1,13 @@
 Type: Package
 Package: ocrRBBR
-Title: Predicts Open Chromatin Region (OCR)-Driven Boolean Rules
-    Explaining Gene Expression Variability
+Title: Explain Gene Expression with Boolean Rules of Chromatin States
 Version: 0.1.0
 Authors@R:
     person("Seyed Amir", "Malekpour", , "a.malekpour@ipm.ir", role = c("aut", "cre"))
-Description: Employs multiome ATAC-seq and RNA-seq datasets, at both bulk
-    and single-cell levels, to infer Boolean rules among cis-regulatory
-    regions and link these regions to their target genes, providing
-    insights into gene regulation mechanisms.
+Description: Infers Boolean rules among cis-regulatory regions using
+    paired chromatin accessibility and gene expression data at bulk and
+    single-cell levels.  Links regulatory regions to target genes,
+    providing insights into gene regulation mechanisms.
 License: GPL-3
 URL: https://github.com/CompBioIPM/ocrRBBR
 Depends: 

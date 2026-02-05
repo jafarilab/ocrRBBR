@@ -1,5 +1,4 @@
 ATAC
-RNAseq
 multiome
 GRanges
 ReadsInTSS
@@ -19,3 +18,12 @@ nFeature
 omics
 rnaseq
 sigmoid
+doParallel
+doSNOW
+foreach
+glmnet
+interpretable
+LogNormalized
+multiomic
+OCRs
+pvalue

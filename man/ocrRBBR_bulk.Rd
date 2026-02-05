@@ -11,25 +11,28 @@ ocrRBBR_bulk(
   peak_ids,
   max_feature = NA,
   slope = NA,
-  num_cores = NA
+  num_cores = NA,
+  verbose = FALSE
 )
 }
 \arguments{
 \item{rnaseq_data}{A numeric matrix of RNA-seq expression values. Rows correspond to genes, columns correspond to cell types or samples.
-**Note:** *ocrRBBR* was tested using **quantile-normalized RNA-seq data**, but it should also work equally well on **TPM-normalized RNA-seq datasets**, provided the data is appropriately scaled across samples.}
+**Note:** \code{ocrRBBR} was tested using **quantile-normalized RNA-seq data**, but it should also work equally well on **TPM-normalized RNA-seq datasets**, provided the data is appropriately scaled across samples.}
 
-\item{atacseq_data}{A numeric matrix of ATAC-seq signal intensities. Rows correspond to peaks, columns correspond to cell types or samples. Column names must match those of rnaseq_data.
-**Note:** Similar to RNA-seq data, *ocrRBBR* is tested using **quantile-normalized ATAC-seq data** but is expected to work with other normalization methods, as long as the data distributions are comparable across samples.}
+\item{atacseq_data}{A numeric matrix of ATAC-seq signal intensities. Rows correspond to peaks, columns correspond to cell types or samples. Column names must match those of \code{rnaseq_data}.
+**Note:** Similar to RNA-seq data, \code{ocrRBBR} is tested using **quantile-normalized ATAC-seq data** but is expected to work with other normalization methods, as long as the data distributions are comparable across samples.}
 
 \item{gene_name}{A character string specifying the gene for which to infer Boolean rules.}
 
-\item{peak_ids}{A vector of peak identifiers corresponding to rows in atacseq_data to be used as candidate regulatory regions for gene_name.}
+\item{peak_ids}{A vector of peak identifiers corresponding to rows in \code{atacseq_data} to be used as candidate regulatory regions for \code{gene_name}.}
 
 \item{max_feature}{An integer specifying the maximum number of input features allowed in a Boolean rule. Default is 3.}
 
 \item{slope}{The slope parameter for the sigmoid activation function. Default is 10.}
 
 \item{num_cores}{Number of parallel workers to use for computation. Adjust according to your system. Default is NA (automatic selection).}
+
+\item{verbose}{Logical. If TRUE, progress messages and a progress bar are shown. Default is FALSE.}
 }
 \value{
 A list containing predicted Boolean rules and associated metrics for the input gene.
@@ -43,16 +46,10 @@ across samples.
 # Load bulk mouse dataset
 data(multiome_human_mouse)  # loads atacseq_data, rnaseq_data, peaks_gr
 
-# Inspect loaded data
-head(mouse_atacseq_data)
-head(mouse_rnaseq_data)
-head(mouse_peaks_gr)
-
 # Example usage:
-peak_ids <- c(278352, 278355, 278362, 278381, 278384, 278386, 278390, 278398)
+peak_ids <- c(278352, 278362, 278381, 278384)
 
 boolean_rules <- ocrRBBR_bulk(mouse_rnaseq_data, mouse_atacseq_data, "Rag2",
     peak_ids = peak_ids, max_feature = 3, slope = 10, num_cores = 1)
 
-print(boolean_rules)
 }

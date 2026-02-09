@@ -141,7 +141,7 @@ linked_peaks <- link_peaks_to_tss(
 
 linked_peaks
 # A tibble: 83 × 7
-   peak                     gene_id            gene_name gene_type      transcript_id      peak_id min_distance
+   peak                     gene_id            gene_name gene_type      transcript_id      peak_id     distance
    <chr>                    <chr>              <chr>     <chr>          <chr>                <int>        <dbl>
  1 chr2:101525902-101525952 ENSMUSG00000032864 Rag2      protein_coding ENSMUST00000044031  278345       98790.
  2 chr2:101533903-101533953 ENSMUSG00000032864 Rag2      protein_coding ENSMUST00000044031  278346       90790.
@@ -374,7 +374,7 @@ linked_peaks <- link_peaks_to_tss(
 
 linked_peaks
 # A tibble: 43 × 7
-   peak                     gene_id         gene_name gene_type      transcript_id   peak_id min_distance
+   peak                     gene_id         gene_name gene_type      transcript_id   peak_id     distance
    <chr>                    <chr>           <chr>     <chr>          <chr>             <int>        <dbl>
  1 chr5:150175660-150175697 ENSG00000019582 CD74      protein_coding ENST00000353334   83441      237071 
  2 chr5:150180579-150181363 ENSG00000019582 CD74      protein_coding ENST00000353334   83442      231778.

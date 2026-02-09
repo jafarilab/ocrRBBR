@@ -30,8 +30,7 @@ Features
 
 # Installation
 ```R
-install.packages("devtools")
-devtools::install_github("CompBioIPM/ocrRBBR")
+install.packages("ocrRBBR")
 ```
 <br>
 
@@ -48,7 +47,8 @@ ocrRBBR_bulk(
   peak_ids     = peak_ids,         # Candidate regulatory peaks for this gene
   max_feature  = 3,                # Maximum number of OCRs allowed in a Boolean rule
   slope        = 10,               # Slope for sigmoid activation function
-  num_cores    = 8                 # Number of parallel workers for computation
+  num_cores    = 8,                # Number of parallel workers for computation
+  verbose      = FALSE             # Logical. If TRUE, progress messages and a progress bar are shown. Default is FALSE.
 )
 ```
 
@@ -71,6 +71,7 @@ Parameter Descriptions
 # max_feature    An integer specifying the maximum number of input features allowed in a Boolean rule. Default is 3.
 # slope	         The slope parameter for the sigmoid activation function. Default is 10.
 # num_cores	     The number of parallel workers to use for computation. Adjust according to your system. Default is NA (automatic selection).
+# verbose        Logical. If TRUE, progress messages and a progress bar are shown. Default is FALSE.
 ```
 <br>
 
@@ -237,7 +238,8 @@ ocrRBBR_single_cell(
   slope        = 10,               # Slope of the sigmoid activation function
   num_cores    = 8,                # Number of parallel workers
   ESS          = 500,              # Effective sample size
-  meta.data    = meta.data         # Per-cell metadata (QC metrics)
+  meta.data    = meta.data,        # Per-cell metadata (QC metrics)
+  verbose      = FALSE             # Logical. If TRUE, progress messages and a progress bar are shown. Default is FALSE.
 )
 ```
 
@@ -255,7 +257,7 @@ Parameter Descriptions
 #
 # peak_ids       A vector of peak identifiers corresponding to rows in atacseq_data, defining candidate regulatory regions for the gene.
 #
-# meta_data      A matrix containing per-cell metadata, including:
+# meta_data      A numeric matrix or data.frame containing additional per-cell covariates (rows = cells, columns = covariates), such as:
 #                nCount_RNA
 #                nFeature_RNA
 #                Percentage of mitochondrial reads
@@ -265,6 +267,7 @@ Parameter Descriptions
 # slope          Slope parameter of the sigmoid activation function used in the model. Default is 10.
 # num_cores      Number of parallel workers for computation. Default is NA (automatic selection).
 # ESS            Effective sample size of the single-cell data after accounting for noise and cell-to-cell correlation. Default is NA.
+# verbose        Logical. If TRUE, progress messages and a progress bar are shown. Default is FALSE.
 ```
 <br>
 
